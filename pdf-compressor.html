@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us | easyytools.com</title>
+    <title>PDF Optimizer | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <div id="toast">Copied to clipboard</div>
         <header class="site-header">
         <a href="index.html" class="logo">easyytools.com</a>
         <nav class="desktop-nav">
@@ -26,32 +27,47 @@
         <a href="contact.html" onclick="toggleMenu()">Contact</a>
     </div>
 
-    <main class="tool-view-prestige" style="max-width: 700px;">
-        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
 
-        <h1 style="font-size: clamp(3rem, 10vw, 5rem); font-weight: 900; letter-spacing: -0.06em; margin-bottom: 4rem;">Contact.</h1>
-        <div class="prestige-panel">
-            <form action="#">
-                <div style="margin-bottom: 2rem;">
-                    <label>Full Identity</label>
-                    <input type="text" class="search-input" placeholder="Your Name" style="text-align: left;">
-                </div>
-                <div style="margin-bottom: 2rem;">
-                    <label>Digital Mail</label>
-                    <input type="email" class="search-input" placeholder="you@example.com" style="text-align: left;">
-                </div>
-                <div style="margin-bottom: 3rem;">
-                    <label>Inquiry Message</label>
-                    <textarea class="search-input" style="height: 150px; text-align: left; border-radius: 20px; padding: 1.5rem;" placeholder="Tell us how we can help..."></textarea>
-                </div>
-                <button type="submit" class="btn-prestige" style="width: 100%; justify-content: center;">Send Message</button>
-            </form>
-        </div>
+    <main class="tool-view-prestige" style="max-width: 1000px;">
+        <a href="index.html" class="btn-back">← Back</a>
+        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
         
+        <div class="prestige-panel animate-up">
+            <h1 class="hero-title">PDF Optimizer.</h1>
+            
+            <div style="border: 2px dashed var(--border); border-radius: 24px; padding: 4rem 2rem; text-align: center; margin-bottom: 2rem; position: relative; overflow: hidden; background: var(--hover);" id="dropzone">
+                <input type="file" id="pdfUpload" accept="application/pdf" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
+                <div style="font-weight: 800; color: var(--text-muted); font-size: 1.2rem; margin-bottom: 1rem;">Drag & Drop PDF Here</div>
+                <button class="btn-secondary">Or Browse Files</button>
+            </div>
+            
+            <div id="controls" style="display: none; margin-bottom: 2rem; text-align: left;">
+                <div style="display: flex; gap: 2rem; justify-content: space-between; margin-bottom: 2rem;">
+                    <div class="result-box" style="flex: 1; padding: 1.5rem; text-align: center; border-radius: 16px;">
+                        <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: var(--text-muted);">Original Size</div>
+                        <div id="origSize" style="font-size: 1.5rem; font-weight: 900; margin-top: 0.5rem;">0 KB</div>
+                    </div>
+                    <div class="result-box" style="flex: 1; padding: 1.5rem; text-align: center; border-radius: 16px; border: 1px solid #00e676;">
+                        <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: #00e676;">Optimized Size</div>
+                        <div id="newSize" style="font-size: 1.5rem; font-weight: 900; margin-top: 0.5rem; color: #00e676;">Processing...</div>
+                    </div>
+                </div>
+                
+                <div style="background: rgba(255, 165, 0, 0.1); border-left: 4px solid orange; padding: 1rem; margin-bottom: 2rem; border-radius: 8px;">
+                    <strong style="color: orange;">Note:</strong> Because this tool runs entirely locally in your browser for privacy, it performs a lightweight structural optimization. Deep image downsampling requires cloud processing.
+                </div>
+
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn-prestige" id="dlBtn" style="flex: 1; opacity: 0.5; pointer-events: none;" onclick="downloadPdf()">Download Optimized PDF</button>
+                    <button class="btn-secondary" style="flex: 1;" onclick="reset()">Start Over</button>
+                </div>
+            </div>
+        </div>
     
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
     </main>
-                    <footer class="site-footer">
+
+<footer class="site-footer">
         <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 3rem; padding-bottom: 4rem;">
             <div style="grid-column: 1 / -1; margin-bottom: 2rem;">
                 <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
@@ -127,5 +143,64 @@
         </div>
     </footer>
     <script src="app.js"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script>
+        const upload = document.getElementById('pdfUpload');
+        const controls = document.getElementById('controls');
+        const dropzone = document.getElementById('dropzone');
+        const dlBtn = document.getElementById('dlBtn');
+        
+        let origFile = null;
+        let optimizedBytes = null;
+        
+        upload.addEventListener('change', (e) => {
+            if(e.target.files.length > 0) {
+                origFile = e.target.files[0];
+                document.getElementById('origSize').innerText = (origFile.size / 1024).toFixed(2) + ' KB';
+                dropzone.style.display = 'none';
+                controls.style.display = 'block';
+                document.getElementById('newSize').innerText = 'Processing...';
+                dlBtn.style.opacity = '0.5';
+                dlBtn.style.pointerEvents = 'none';
+                compressPdf();
+            }
+        });
+        
+        async function compressPdf() {
+            try {
+                const arrayBuffer = await origFile.arrayBuffer();
+                const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+                optimizedBytes = await pdfDoc.save({ useObjectStreams: false });
+                
+                document.getElementById('newSize').innerText = (optimizedBytes.length / 1024).toFixed(2) + ' KB';
+                dlBtn.style.opacity = '1';
+                dlBtn.style.pointerEvents = 'auto';
+            } catch(err) {
+                document.getElementById('newSize').innerText = 'Error';
+                showToast("Failed to process PDF.");
+            }
+        }
+        
+        function downloadPdf() {
+            if(!optimizedBytes) return;
+            const blob = new Blob([optimizedBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'optimized_' + origFile.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function reset() {
+            origFile = null;
+            optimizedBytes = null;
+            upload.value = '';
+            controls.style.display = 'none';
+            dropzone.style.display = 'block';
+        }
+    </script>
 </body>
 </html>

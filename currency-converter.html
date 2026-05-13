@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us | easyytools.com</title>
+    <title>Live Currency Converter | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <div id="toast">Copied to clipboard</div>
         <header class="site-header">
         <a href="index.html" class="logo">easyytools.com</a>
         <nav class="desktop-nav">
@@ -26,32 +27,55 @@
         <a href="contact.html" onclick="toggleMenu()">Contact</a>
     </div>
 
-    <main class="tool-view-prestige" style="max-width: 700px;">
-        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
 
-        <h1 style="font-size: clamp(3rem, 10vw, 5rem); font-weight: 900; letter-spacing: -0.06em; margin-bottom: 4rem;">Contact.</h1>
-        <div class="prestige-panel">
-            <form action="#">
-                <div style="margin-bottom: 2rem;">
-                    <label>Full Identity</label>
-                    <input type="text" class="search-input" placeholder="Your Name" style="text-align: left;">
-                </div>
-                <div style="margin-bottom: 2rem;">
-                    <label>Digital Mail</label>
-                    <input type="email" class="search-input" placeholder="you@example.com" style="text-align: left;">
-                </div>
-                <div style="margin-bottom: 3rem;">
-                    <label>Inquiry Message</label>
-                    <textarea class="search-input" style="height: 150px; text-align: left; border-radius: 20px; padding: 1.5rem;" placeholder="Tell us how we can help..."></textarea>
-                </div>
-                <button type="submit" class="btn-prestige" style="width: 100%; justify-content: center;">Send Message</button>
-            </form>
-        </div>
+    <main class="tool-view-prestige" style="max-width: 800px;">
+        <a href="index.html" class="btn-back">← Back</a>
         
-    
-        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
+        <div class="prestige-panel animate-up">
+            <h1 class="hero-title">Currency Converter.</h1>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Live exchange rates powered by the European Central Bank.</p>
+            
+            <div style="display: flex; gap: 1rem; align-items: center; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                    <label style="font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Amount</label>
+                    <input type="number" id="currAmount" class="search-input" value="1" oninput="convert()">
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <label style="font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--text-muted);">From</label>
+                    <select id="currFrom" class="search-input" style="padding: 1rem; border-radius: 12px; cursor: pointer;" onchange="convert()">
+                        <option value="USD" selected>USD - US Dollar</option>
+                        <option value="EUR">EUR - Euro</option>
+                        <option value="GBP">GBP - British Pound</option>
+                        <option value="INR">INR - Indian Rupee</option>
+                        <option value="AUD">AUD - Australian Dollar</option>
+                        <option value="CAD">CAD - Canadian Dollar</option>
+                        <option value="JPY">JPY - Japanese Yen</option>
+                        <option value="CNY">CNY - Chinese Yuan</option>
+                    </select>
+                </div>
+                <button class="btn-secondary" onclick="swapCurrencies()" style="margin-top: 1.5rem; padding: 1rem; border-radius: 12px;">⇄</button>
+                <div style="flex: 1; min-width: 150px;">
+                    <label style="font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--text-muted);">To</label>
+                    <select id="currTo" class="search-input" style="padding: 1rem; border-radius: 12px; cursor: pointer;" onchange="convert()">
+                        <option value="EUR" selected>EUR - Euro</option>
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="GBP">GBP - British Pound</option>
+                        <option value="INR">INR - Indian Rupee</option>
+                        <option value="AUD">AUD - Australian Dollar</option>
+                        <option value="CAD">CAD - Canadian Dollar</option>
+                        <option value="JPY">JPY - Japanese Yen</option>
+                        <option value="CNY">CNY - Chinese Yuan</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="result-box" style="padding: 3rem; text-align: center; border-radius: 16px; border: 1px solid #00e676;">
+                <div id="currResult" style="font-size: 3rem; font-weight: 900; color: #00e676; word-break: break-all;">---</div>
+                <div id="currRate" style="font-size: 1rem; color: var(--text-muted); margin-top: 1rem; font-weight: 700;">Fetching live rates...</div>
+            </div>
+        </div>
     </main>
-                    <footer class="site-footer">
+<footer class="site-footer">
         <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 3rem; padding-bottom: 4rem;">
             <div style="grid-column: 1 / -1; margin-bottom: 2rem;">
                 <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
@@ -127,5 +151,57 @@
         </div>
     </footer>
     <script src="app.js"></script>
+    <script>
+        let ratesCache = {};
+        
+        async function fetchRates(base) {
+            if(ratesCache[base]) return ratesCache[base];
+            try {
+                const res = await fetch(`https://api.frankfurter.app/latest?from=${base}`);
+                const data = await res.json();
+                ratesCache[base] = data.rates;
+                return data.rates;
+            } catch(err) {
+                document.getElementById('currRate').innerText = "Failed to fetch live rates.";
+                return null;
+            }
+        }
+
+        function swapCurrencies() {
+            let from = document.getElementById('currFrom').value;
+            let to = document.getElementById('currTo').value;
+            document.getElementById('currFrom').value = to;
+            document.getElementById('currTo').value = from;
+            convert();
+        }
+        
+        async function convert() {
+            let amt = parseFloat(document.getElementById('currAmount').value);
+            let from = document.getElementById('currFrom').value;
+            let to = document.getElementById('currTo').value;
+            
+            if(isNaN(amt)) return;
+            if(from === to) {
+                document.getElementById('currResult').innerText = amt.toFixed(2) + ' ' + to;
+                document.getElementById('currRate').innerText = `1 ${from} = 1 ${to}`;
+                return;
+            }
+            
+            document.getElementById('currRate').innerText = "Fetching live rates...";
+            let rates = await fetchRates(from);
+            
+            if(rates && rates[to]) {
+                let rate = rates[to];
+                let converted = amt * rate;
+                document.getElementById('currResult').innerText = converted.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' ' + to;
+                document.getElementById('currRate').innerText = `1 ${from} = ${rate} ${to}`;
+            } else if (rates) {
+                document.getElementById('currRate').innerText = `Rate for ${to} not available.`;
+            }
+        }
+        
+        // Init
+        convert();
+    </script>
 </body>
 </html>

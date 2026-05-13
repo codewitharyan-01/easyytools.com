@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator | easyytools.com</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .calc-display { background: var(--glass); padding: 3rem 2rem; text-align: right; font-size: 4rem; font-weight: 900; border-radius: 24px; margin-bottom: 2rem; border: 1px solid var(--border); line-height: 1; }
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        .calc-btn { padding: 1.75rem; border: 1px solid var(--border); background: var(--glass); border-radius: 16px; font-size: 1.5rem; font-weight: 800; color: var(--text); cursor: pointer; transition: 0.2s; }
+        .calc-btn:hover { background: var(--hover); transform: translateY(-2px); }
+        .calc-btn.op { color: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <div id="toast">Copied to clipboard</div>
+        <header class="site-header">
+        <a href="index.html" class="logo">easyytools.com</a>
+        <nav class="desktop-nav">
+            <a href="index.html">Home</a>
+            <a href="index.html#tool-grid">Tools</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+    </header>
+    <div class="mobile-overlay" id="mobile-overlay">
+        <a href="index.html" onclick="toggleMenu()">Home</a>
+        <a href="index.html#tool-grid" onclick="toggleMenu()">Tools</a>
+        <a href="privacy.html" onclick="toggleMenu()">Privacy</a>
+        <a href="contact.html" onclick="toggleMenu()">Contact</a>
+    </div>
+
+    <main class="tool-view-prestige" style="max-width: 600px;">
+        <a href="index.html" class="btn-back">← Back</a>
+        
+        <div class="prestige-panel animate-up">
+            <h1 class="hero-title" style="font-size: 2.5rem; text-align: center;">Scientific Calc.</h1>
+            
+            <div style="background: var(--bg); border: 2px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: right; overflow: hidden; position: relative;">
+                <div id="modeDisplay" style="position: absolute; top: 0.5rem; left: 1rem; color: var(--text-muted); font-weight: 800; font-size: 0.9rem;">DEG</div>
+                <div id="exprDisplay" style="color: var(--text-muted); font-size: 1.2rem; min-height: 1.5rem; margin-bottom: 0.5rem; white-space: nowrap; overflow-x: auto;"></div>
+                <div id="display" style="font-size: 3rem; font-weight: 900; color: var(--text); overflow-x: auto; white-space: nowrap;">0</div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem;">
+                <!-- Row 1 -->
+                <button class="btn-secondary" onclick="toggleDegRad()" id="degRadBtn" style="font-size: 1rem; padding: 1rem 0; justify-content: center;">DEG</button>
+                <button class="btn-secondary" onclick="insert('sin(')" style="font-size: 1rem; padding: 1rem 0; justify-content: center;">sin</button>
+                <button class="btn-secondary" onclick="insert('cos(')" style="font-size: 1rem; padding: 1rem 0; justify-content: center;">cos</button>
+                <button class="btn-secondary" onclick="insert('tan(')" style="font-size: 1rem; padding: 1rem 0; justify-content: center;">tan</button>
+                <button class="btn-secondary" onclick="insert('pi')" style="font-size: 1.2rem; padding: 1rem 0; font-weight: 800; justify-content: center;">π</button>
+                
+                <!-- Row 2 -->
+                <button class="btn-secondary" onclick="insert('asin(')" style="font-size: 1rem; padding: 1rem 0; justify-content: center;">sin⁻¹</button>
+                <button class="btn-secondary" onclick="insert('acos(')" style="font-size: 1rem; padding: 1rem 0; justify-content: center;">cos⁻¹</button>
+                <button class="btn-secondary" onclick="insert('atan(')" style="font-size: 1rem; padding: 1rem 0; justify-content: center;">tan⁻¹</button>
+                <button class="btn-secondary" onclick="insert('log(')" style="font-size: 1rem; padding: 1rem 0; justify-content: center;">log₁₀</button>
+                <button class="btn-secondary" onclick="insert('ln(')" style="font-size: 1rem; padding: 1rem 0; justify-content: center;">ln</button>
+
+                <!-- Row 3 -->
+                <button class="btn-secondary" onclick="insert('(')" style="font-size: 1.2rem; padding: 1rem 0; font-weight: 800; justify-content: center;">(</button>
+                <button class="btn-secondary" onclick="insert(')')" style="font-size: 1.2rem; padding: 1rem 0; font-weight: 800; justify-content: center;">)</button>
+                <button class="btn-secondary" onclick="insert('^')" style="font-size: 1.2rem; padding: 1rem 0; font-weight: 800; justify-content: center;">xʸ</button>
+                <button class="btn-secondary" onclick="insert('sqrt(')" style="font-size: 1.2rem; padding: 1rem 0; font-weight: 800; justify-content: center;">√</button>
+                <button class="btn-secondary" onclick="insert('e')" style="font-size: 1.2rem; padding: 1rem 0; font-weight: 800; justify-content: center;">e</button>
+                
+                <!-- Row 4 -->
+                <button class="btn-prestige" onclick="clearAll()" style="font-size: 1.2rem; padding: 1rem 0; background: #ff4444; color: white; justify-content: center;">AC</button>
+                <button class="btn-secondary" onclick="backspace()" style="font-size: 1.2rem; padding: 1rem 0; justify-content: center;">⌫</button>
+                <button class="btn-secondary" onclick="insert('%')" style="font-size: 1.2rem; padding: 1rem 0; justify-content: center;">%</button>
+                <button class="btn-secondary" onclick="insert('/')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; background: rgba(0, 230, 118, 0.1); color: #00e676; justify-content: center;">÷</button>
+                <button class="btn-secondary" onclick="insert('*')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; background: rgba(0, 230, 118, 0.1); color: #00e676; justify-content: center;">×</button>
+                
+                <!-- Row 5 -->
+                <button class="btn-secondary" onclick="insert('7')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; justify-content: center;">7</button>
+                <button class="btn-secondary" onclick="insert('8')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; justify-content: center;">8</button>
+                <button class="btn-secondary" onclick="insert('9')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; justify-content: center;">9</button>
+                <button class="btn-secondary" onclick="insert('-')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; background: rgba(0, 230, 118, 0.1); color: #00e676; justify-content: center;">−</button>
+                <button class="btn-secondary" onclick="insert('+')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; background: rgba(0, 230, 118, 0.1); color: #00e676; justify-content: center;">+</button>
+
+                <!-- Row 6 -->
+                <button class="btn-secondary" onclick="insert('4')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; justify-content: center;">4</button>
+                <button class="btn-secondary" onclick="insert('5')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; justify-content: center;">5</button>
+                <button class="btn-secondary" onclick="insert('6')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; justify-content: center;">6</button>
+                <button class="btn-secondary" onclick="insert('1')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; justify-content: center;">1</button>
+                <button class="btn-secondary" onclick="insert('2')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; justify-content: center;">2</button>
+                
+                <!-- Row 7 -->
+                <button class="btn-secondary" onclick="insert('3')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; justify-content: center;">3</button>
+                <button class="btn-secondary" onclick="insert('0')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; grid-column: span 2; justify-content: center;">0</button>
+                <button class="btn-secondary" onclick="insert('.')" style="font-size: 1.5rem; padding: 1rem 0; font-weight: 800; justify-content: center;">.</button>
+                <button class="btn-prestige" onclick="calculate()" style="font-size: 1.5rem; padding: 1rem 0; justify-content: center;">=</button>
+            </div>
+        </div>
+    </main>
+
+<footer class="site-footer">
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 3rem; padding-bottom: 4rem;">
+            <div style="grid-column: 1 / -1; margin-bottom: 2rem;">
+                <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
+                <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem; max-width: 400px;">A prestigious collective of high-performance online utilities designed for modern professionals.</p>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Financial & Math</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="calculator.html" class="footer-link">Basic Calculator</a>
+                    <a href="scientific-calculator.html" class="footer-link">Scientific Calc</a>
+                    <a href="gst-calculator.html" class="footer-link">GST Calculator</a>
+                    <a href="emi-calculator.html" class="footer-link">EMI Calculator</a>
+                    <a href="percentage-calculator.html" class="footer-link">Percentage Calc</a>
+                    <a href="sip-calculator.html" class="footer-link">SIP Calculator</a>
+                    <a href="compound-interest.html" class="footer-link">Compound Interest</a>
+                    <a href="currency-converter.html" class="footer-link">Currency Converter</a>
+                    <a href="roi-calculator.html" class="footer-link">ROI Calculator</a>
+                    <a href="amortization-calculator.html" class="footer-link">Amortization Calc</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Daily Utilities</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="age-calculator.html" class="footer-link">Age Calculator</a>
+                    <a href="bmi-calculator.html" class="footer-link">BMI Calculator</a>
+                    <a href="stopwatch.html" class="footer-link">Stopwatch</a>
+                    <a href="alarm.html" class="footer-link">Alarm Clock</a>
+                    <a href="pomodoro.html" class="footer-link">Pomodoro Timer</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Text & Media</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="word-counter.html" class="footer-link">Word Counter</a>
+                    <a href="grammar-checker.html" class="footer-link">Grammar Checker</a>
+                    <a href="image-compressor.html" class="footer-link">Image Compressor</a>
+                    <a href="image-converter.html" class="footer-link">Image Converter</a>
+                    <a href="pdf-compressor.html" class="footer-link">PDF Compressor</a>
+                    <a href="ai-humanizer.html" class="footer-link">AI Humanizer</a>
+                    <a href="case-converter.html" class="footer-link">Case Converter</a>
+                    <a href="remove-whitespace.html" class="footer-link">Remove Whitespace</a>
+                    <a href="markdown-preview.html" class="footer-link">Markdown Preview</a>
+                    <a href="qr-generator.html" class="footer-link">QR Generator</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Dev & Security</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="password-generator.html" class="footer-link">Password Gen</a>
+                    <a href="sha256-hasher.html" class="footer-link">SHA256 Hasher</a>
+                    <a href="base64.html" class="footer-link">Base64 Encoder</a>
+                    <a href="url-encoder.html" class="footer-link">URL Encoder</a>
+                    <a href="uuid-generator.html" class="footer-link">UUID Generator</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Web Utilities</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="json-formatter.html" class="footer-link">JSON Formatter</a>
+                    <a href="css-minifier.html" class="footer-link">CSS Minifier</a>
+                    <a href="regex-tester.html" class="footer-link">Regex Matcher</a>
+                    <a href="color-picker.html" class="footer-link">Color Picker</a>
+                    <a href="random-number.html" class="footer-link">Random Number</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 easyytools.com</div>
+            <div class="footer-links">
+                <a href="privacy.html" class="footer-link" style="font-weight: 700;">Privacy</a>
+                <a href="contact.html" class="footer-link" style="font-weight: 700;">Contact</a>
+            </div>
+        </div>
+    </footer>
+    <script src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+    <script>
+        let expr = '';
+        let isDeg = true;
+        const display = document.getElementById('display');
+        const exprDisplay = document.getElementById('exprDisplay');
+        const modeDisplay = document.getElementById('modeDisplay');
+        const degRadBtn = document.getElementById('degRadBtn');
+        
+        function toggleDegRad() {
+            isDeg = !isDeg;
+            modeDisplay.innerText = isDeg ? "DEG" : "RAD";
+            degRadBtn.innerText = isDeg ? "DEG" : "RAD";
+        }
+        
+        function insert(val) {
+            if(display.innerText === "Error") clearAll();
+            
+            expr += val;
+            updateDisplay();
+        }
+        
+        function updateDisplay() {
+            let visual = expr.replace(/\*/g, '×').replace(/\//g, '÷');
+            display.innerText = visual || '0';
+        }
+        
+        function clearAll() {
+            expr = '';
+            exprDisplay.innerText = '';
+            display.innerText = '0';
+        }
+        
+        function backspace() {
+            if(display.innerText === "Error") return clearAll();
+            
+            if(expr.length > 0) {
+                if(expr.endsWith('sin(') || expr.endsWith('cos(') || expr.endsWith('tan(') || expr.endsWith('log(') || expr.endsWith('ln(')) {
+                    expr = expr.slice(0, -4);
+                } else if (expr.endsWith('asin(') || expr.endsWith('acos(') || expr.endsWith('atan(') || expr.endsWith('sqrt(')) {
+                    expr = expr.slice(0, -5);
+                } else {
+                    expr = expr.slice(0, -1);
+                }
+            }
+            updateDisplay();
+        }
+        
+        function calculate() {
+            if(!expr) return;
+            try {
+                let evalExpr = expr;
+                const scope = {};
+                
+                if(isDeg) {
+                    evalExpr = evalExpr.replace(/sin\(/g, 'sind(');
+                    evalExpr = evalExpr.replace(/cos\(/g, 'cosd(');
+                    evalExpr = evalExpr.replace(/tan\(/g, 'tand(');
+                    evalExpr = evalExpr.replace(/asin\(/g, 'asind(');
+                    evalExpr = evalExpr.replace(/acos\(/g, 'acosd(');
+                    evalExpr = evalExpr.replace(/atan\(/g, 'atand(');
+                    
+                    scope.sind = function(x) { return math.sin(math.unit(x, 'deg')) };
+                    scope.cosd = function(x) { return math.cos(math.unit(x, 'deg')) };
+                    scope.tand = function(x) { return math.tan(math.unit(x, 'deg')) };
+                    scope.asind = function(x) { return math.asin(x).toNumber('deg') };
+                    scope.acosd = function(x) { return math.acos(x).toNumber('deg') };
+                    scope.atand = function(x) { return math.atan(x).toNumber('deg') };
+                }
+                
+                // Both DEG and RAD modes need log10 mapping because mathjs defaults log() to natural log.
+                scope.log = function(x) { return math.log10(x) };
+                scope.ln = function(x) { return math.log(x) };
+                
+                let result = math.evaluate(evalExpr, scope);
+                
+                if (typeof result === 'number') {
+                    result = math.format(result, {precision: 14});
+                }
+                
+                exprDisplay.innerText = expr.replace(/\*/g, '×').replace(/\//g, '÷') + ' =';
+                display.innerText = result;
+                expr = result.toString();
+                
+            } catch(err) {
+                display.innerText = "Error";
+            }
+        }
+    </script>
+</body>
+</html>

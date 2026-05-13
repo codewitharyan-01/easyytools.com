@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us | easyytools.com</title>
+    <title>Amortization Schedule Generator | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <div id="toast">Copied to clipboard</div>
         <header class="site-header">
         <a href="index.html" class="logo">easyytools.com</a>
         <nav class="desktop-nav">
@@ -26,32 +27,63 @@
         <a href="contact.html" onclick="toggleMenu()">Contact</a>
     </div>
 
-    <main class="tool-view-prestige" style="max-width: 700px;">
-        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
 
-        <h1 style="font-size: clamp(3rem, 10vw, 5rem); font-weight: 900; letter-spacing: -0.06em; margin-bottom: 4rem;">Contact.</h1>
-        <div class="prestige-panel">
-            <form action="#">
-                <div style="margin-bottom: 2rem;">
-                    <label>Full Identity</label>
-                    <input type="text" class="search-input" placeholder="Your Name" style="text-align: left;">
-                </div>
-                <div style="margin-bottom: 2rem;">
-                    <label>Digital Mail</label>
-                    <input type="email" class="search-input" placeholder="you@example.com" style="text-align: left;">
-                </div>
-                <div style="margin-bottom: 3rem;">
-                    <label>Inquiry Message</label>
-                    <textarea class="search-input" style="height: 150px; text-align: left; border-radius: 20px; padding: 1.5rem;" placeholder="Tell us how we can help..."></textarea>
-                </div>
-                <button type="submit" class="btn-prestige" style="width: 100%; justify-content: center;">Send Message</button>
-            </form>
-        </div>
+    <main class="tool-view-prestige" style="max-width: 1000px;">
+        <a href="index.html" class="btn-back">← Back</a>
         
-    
-        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
+        <div class="prestige-panel animate-up">
+            <h1 class="hero-title">Amortization Schedule.</h1>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Advanced loan payment breakdown and table generation.</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Loan Amount</label>
+                    <input type="number" id="aLoan" class="search-input" value="100000">
+                </div>
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Interest Rate (%)</label>
+                    <input type="number" id="aRate" class="search-input" value="7">
+                </div>
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Loan Term (Years)</label>
+                    <input type="number" id="aYears" class="search-input" value="5">
+                </div>
+            </div>
+            
+            <button class="btn-prestige" onclick="calculateAmort()" style="width: 100%; justify-content: center; margin-bottom: 2rem;">Generate Schedule</button>
+            
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
+                <div class="result-box" style="flex: 1; padding: 1.5rem; text-align: center; border-radius: 16px;">
+                    <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: var(--text-muted);">Monthly EMI</div>
+                    <div id="aEmi" style="font-size: 1.5rem; font-weight: 900; margin-top: 0.5rem; color: #00e676;">0</div>
+                </div>
+                <div class="result-box" style="flex: 1; padding: 1.5rem; text-align: center; border-radius: 16px;">
+                    <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: var(--text-muted);">Total Interest</div>
+                    <div id="aInt" style="font-size: 1.5rem; font-weight: 900; margin-top: 0.5rem;">0</div>
+                </div>
+                <div class="result-box" style="flex: 1; padding: 1.5rem; text-align: center; border-radius: 16px;">
+                    <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: var(--text-muted);">Total Payment</div>
+                    <div id="aTotal" style="font-size: 1.5rem; font-weight: 900; margin-top: 0.5rem;">0</div>
+                </div>
+            </div>
+            
+            <div style="overflow-x: auto; border-radius: 16px; border: 1px solid var(--border);">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 600px;">
+                    <thead>
+                        <tr style="background: var(--hover); color: var(--text-muted);">
+                            <th style="padding: 1rem; font-weight: 800;">Month</th>
+                            <th style="padding: 1rem; font-weight: 800;">Principal Paid</th>
+                            <th style="padding: 1rem; font-weight: 800;">Interest Paid</th>
+                            <th style="padding: 1rem; font-weight: 800;">Remaining Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody id="aTable">
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </main>
-                    <footer class="site-footer">
+<footer class="site-footer">
         <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 3rem; padding-bottom: 4rem;">
             <div style="grid-column: 1 / -1; margin-bottom: 2rem;">
                 <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
@@ -127,5 +159,44 @@
         </div>
     </footer>
     <script src="app.js"></script>
+    <script>
+        function calculateAmort() {
+            let P = parseFloat(document.getElementById('aLoan').value);
+            let r = parseFloat(document.getElementById('aRate').value) / 100 / 12;
+            let n = parseFloat(document.getElementById('aYears').value) * 12;
+            
+            if(isNaN(P) || isNaN(r) || isNaN(n)) return showToast("Invalid inputs");
+            
+            let emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+            let totalPayment = emi * n;
+            let totalInterest = totalPayment - P;
+            
+            document.getElementById('aEmi').innerText = emi.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('aInt').innerText = totalInterest.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('aTotal').innerText = totalPayment.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            
+            let tbody = document.getElementById('aTable');
+            let html = '';
+            let balance = P;
+            
+            for(let i = 1; i <= n; i++) {
+                let interestForMonth = balance * r;
+                let principalForMonth = emi - interestForMonth;
+                balance = balance - principalForMonth;
+                if(balance < 0) balance = 0;
+                
+                html += `
+                    <tr style="border-top: 1px solid var(--border);">
+                        <td style="padding: 1rem;">${i}</td>
+                        <td style="padding: 1rem; color: #00e676;">${principalForMonth.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                        <td style="padding: 1rem; color: #ff4444;">${interestForMonth.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                        <td style="padding: 1rem; font-weight: 700;">${balance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    </tr>
+                `;
+            }
+            tbody.innerHTML = html;
+        }
+        calculateAmort();
+    </script>
 </body>
 </html>

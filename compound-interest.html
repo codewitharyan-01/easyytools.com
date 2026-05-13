@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us | easyytools.com</title>
+    <title>Compound Interest Calculator | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <div id="toast">Copied to clipboard</div>
         <header class="site-header">
         <a href="index.html" class="logo">easyytools.com</a>
         <nav class="desktop-nav">
@@ -26,32 +27,58 @@
         <a href="contact.html" onclick="toggleMenu()">Contact</a>
     </div>
 
-    <main class="tool-view-prestige" style="max-width: 700px;">
-        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
 
-        <h1 style="font-size: clamp(3rem, 10vw, 5rem); font-weight: 900; letter-spacing: -0.06em; margin-bottom: 4rem;">Contact.</h1>
-        <div class="prestige-panel">
-            <form action="#">
-                <div style="margin-bottom: 2rem;">
-                    <label>Full Identity</label>
-                    <input type="text" class="search-input" placeholder="Your Name" style="text-align: left;">
-                </div>
-                <div style="margin-bottom: 2rem;">
-                    <label>Digital Mail</label>
-                    <input type="email" class="search-input" placeholder="you@example.com" style="text-align: left;">
-                </div>
-                <div style="margin-bottom: 3rem;">
-                    <label>Inquiry Message</label>
-                    <textarea class="search-input" style="height: 150px; text-align: left; border-radius: 20px; padding: 1.5rem;" placeholder="Tell us how we can help..."></textarea>
-                </div>
-                <button type="submit" class="btn-prestige" style="width: 100%; justify-content: center;">Send Message</button>
-            </form>
-        </div>
+    <main class="tool-view-prestige" style="max-width: 800px;">
+        <a href="index.html" class="btn-back">← Back</a>
         
-    
-        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
+        <div class="prestige-panel animate-up">
+            <h1 class="hero-title">Compound Interest.</h1>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Calculate compound growth for lump-sum investments.</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Principal Amount</label>
+                    <input type="number" id="cPrincipal" class="search-input" value="10000">
+                </div>
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Interest Rate (%)</label>
+                    <input type="number" id="cRate" class="search-input" value="8">
+                </div>
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Time Period (Years)</label>
+                    <input type="number" id="cYears" class="search-input" value="10">
+                </div>
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Compounding Freq</label>
+                    <select id="cFreq" class="search-input" style="padding: 1rem; border-radius: 12px; cursor: pointer;">
+                        <option value="1">Annually (1/yr)</option>
+                        <option value="2">Semi-Annually (2/yr)</option>
+                        <option value="4">Quarterly (4/yr)</option>
+                        <option value="12" selected>Monthly (12/yr)</option>
+                        <option value="365">Daily (365/yr)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="btn-prestige" onclick="calculateComp()" style="width: 100%; justify-content: center; margin-bottom: 2rem;">Calculate</button>
+            
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <div class="result-box" style="flex: 1; padding: 1.5rem; text-align: center; border-radius: 16px;">
+                    <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: var(--text-muted);">Principal</div>
+                    <div id="cPrincOut" style="font-size: 1.5rem; font-weight: 900; margin-top: 0.5rem;">0</div>
+                </div>
+                <div class="result-box" style="flex: 1; padding: 1.5rem; text-align: center; border-radius: 16px;">
+                    <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: var(--text-muted);">Total Interest</div>
+                    <div id="cIntOut" style="font-size: 1.5rem; font-weight: 900; margin-top: 0.5rem; color: #00e676;">0</div>
+                </div>
+                <div class="result-box" style="flex: 1; padding: 1.5rem; text-align: center; border-radius: 16px; border: 1px solid #00e676; min-width: 200px;">
+                    <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: #00e676;">Future Value</div>
+                    <div id="cTotalOut" style="font-size: 2rem; font-weight: 900; margin-top: 0.5rem; color: #00e676;">0</div>
+                </div>
+            </div>
+        </div>
     </main>
-                    <footer class="site-footer">
+<footer class="site-footer">
         <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 3rem; padding-bottom: 4rem;">
             <div style="grid-column: 1 / -1; margin-bottom: 2rem;">
                 <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
@@ -127,5 +154,23 @@
         </div>
     </footer>
     <script src="app.js"></script>
+    <script>
+        function calculateComp() {
+            let P = parseFloat(document.getElementById('cPrincipal').value);
+            let r = parseFloat(document.getElementById('cRate').value) / 100;
+            let t = parseFloat(document.getElementById('cYears').value);
+            let n = parseFloat(document.getElementById('cFreq').value);
+            
+            if(isNaN(P) || isNaN(r) || isNaN(t)) return showToast("Invalid inputs");
+            
+            let A = P * Math.pow(1 + (r / n), n * t);
+            let interest = A - P;
+            
+            document.getElementById('cPrincOut').innerText = P.toLocaleString(undefined, {maximumFractionDigits: 2});
+            document.getElementById('cIntOut').innerText = interest.toLocaleString(undefined, {maximumFractionDigits: 2});
+            document.getElementById('cTotalOut').innerText = A.toLocaleString(undefined, {maximumFractionDigits: 2});
+        }
+        calculateComp();
+    </script>
 </body>
 </html>

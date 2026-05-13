@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us | easyytools.com</title>
+    <title>ROI Calculator | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <div id="toast">Copied to clipboard</div>
         <header class="site-header">
         <a href="index.html" class="logo">easyytools.com</a>
         <nav class="desktop-nav">
@@ -26,32 +27,40 @@
         <a href="contact.html" onclick="toggleMenu()">Contact</a>
     </div>
 
-    <main class="tool-view-prestige" style="max-width: 700px;">
-        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
 
-        <h1 style="font-size: clamp(3rem, 10vw, 5rem); font-weight: 900; letter-spacing: -0.06em; margin-bottom: 4rem;">Contact.</h1>
-        <div class="prestige-panel">
-            <form action="#">
-                <div style="margin-bottom: 2rem;">
-                    <label>Full Identity</label>
-                    <input type="text" class="search-input" placeholder="Your Name" style="text-align: left;">
-                </div>
-                <div style="margin-bottom: 2rem;">
-                    <label>Digital Mail</label>
-                    <input type="email" class="search-input" placeholder="you@example.com" style="text-align: left;">
-                </div>
-                <div style="margin-bottom: 3rem;">
-                    <label>Inquiry Message</label>
-                    <textarea class="search-input" style="height: 150px; text-align: left; border-radius: 20px; padding: 1.5rem;" placeholder="Tell us how we can help..."></textarea>
-                </div>
-                <button type="submit" class="btn-prestige" style="width: 100%; justify-content: center;">Send Message</button>
-            </form>
-        </div>
+    <main class="tool-view-prestige" style="max-width: 800px;">
+        <a href="index.html" class="btn-back">← Back</a>
         
-    
-        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
+        <div class="prestige-panel animate-up">
+            <h1 class="hero-title">ROI Calculator.</h1>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Return on Investment analysis for businesses and marketing.</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Amount Invested</label>
+                    <input type="number" id="roiInv" class="search-input" value="1000">
+                </div>
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Amount Returned</label>
+                    <input type="number" id="roiRet" class="search-input" value="1500">
+                </div>
+            </div>
+            
+            <button class="btn-prestige" onclick="calculateROI()" style="width: 100%; justify-content: center; margin-bottom: 2rem;">Calculate ROI</button>
+            
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <div class="result-box" style="flex: 1; padding: 1.5rem; text-align: center; border-radius: 16px;">
+                    <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: var(--text-muted);">Net Profit</div>
+                    <div id="roiProfit" style="font-size: 1.5rem; font-weight: 900; margin-top: 0.5rem;">0</div>
+                </div>
+                <div class="result-box" style="flex: 1; padding: 1.5rem; text-align: center; border-radius: 16px; border: 1px solid #00e676;">
+                    <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: #00e676;">ROI Percentage</div>
+                    <div id="roiPerc" style="font-size: 2rem; font-weight: 900; margin-top: 0.5rem; color: #00e676;">0%</div>
+                </div>
+            </div>
+        </div>
     </main>
-                    <footer class="site-footer">
+<footer class="site-footer">
         <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 3rem; padding-bottom: 4rem;">
             <div style="grid-column: 1 / -1; margin-bottom: 2rem;">
                 <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
@@ -127,5 +136,29 @@
         </div>
     </footer>
     <script src="app.js"></script>
+    <script>
+        function calculateROI() {
+            let inv = parseFloat(document.getElementById('roiInv').value);
+            let ret = parseFloat(document.getElementById('roiRet').value);
+            
+            if(isNaN(inv) || isNaN(ret) || inv === 0) return showToast("Invalid inputs");
+            
+            let profit = ret - inv;
+            let roi = (profit / inv) * 100;
+            
+            document.getElementById('roiProfit').innerText = profit.toLocaleString(undefined, {maximumFractionDigits: 2});
+            let percEl = document.getElementById('roiPerc');
+            percEl.innerText = roi.toFixed(2) + '%';
+            
+            if(roi >= 0) {
+                percEl.style.color = '#00e676';
+                percEl.parentElement.style.borderColor = '#00e676';
+            } else {
+                percEl.style.color = '#ff4444';
+                percEl.parentElement.style.borderColor = '#ff4444';
+            }
+        }
+        calculateROI();
+    </script>
 </body>
 </html>

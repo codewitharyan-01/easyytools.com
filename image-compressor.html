@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us | easyytools.com</title>
+    <title>Image Compressor | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <div id="toast">Copied to clipboard</div>
         <header class="site-header">
         <a href="index.html" class="logo">easyytools.com</a>
         <nav class="desktop-nav">
@@ -26,32 +27,46 @@
         <a href="contact.html" onclick="toggleMenu()">Contact</a>
     </div>
 
-    <main class="tool-view-prestige" style="max-width: 700px;">
-        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
 
-        <h1 style="font-size: clamp(3rem, 10vw, 5rem); font-weight: 900; letter-spacing: -0.06em; margin-bottom: 4rem;">Contact.</h1>
-        <div class="prestige-panel">
-            <form action="#">
-                <div style="margin-bottom: 2rem;">
-                    <label>Full Identity</label>
-                    <input type="text" class="search-input" placeholder="Your Name" style="text-align: left;">
-                </div>
-                <div style="margin-bottom: 2rem;">
-                    <label>Digital Mail</label>
-                    <input type="email" class="search-input" placeholder="you@example.com" style="text-align: left;">
-                </div>
-                <div style="margin-bottom: 3rem;">
-                    <label>Inquiry Message</label>
-                    <textarea class="search-input" style="height: 150px; text-align: left; border-radius: 20px; padding: 1.5rem;" placeholder="Tell us how we can help..."></textarea>
-                </div>
-                <button type="submit" class="btn-prestige" style="width: 100%; justify-content: center;">Send Message</button>
-            </form>
-        </div>
+    <main class="tool-view-prestige" style="max-width: 1000px;">
+        <a href="index.html" class="btn-back">← Back</a>
+        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
         
+        <div class="prestige-panel animate-up">
+            <h1 class="hero-title">Image Compressor.</h1>
+            
+            <div style="border: 2px dashed var(--border); border-radius: 24px; padding: 4rem 2rem; text-align: center; margin-bottom: 2rem; position: relative; overflow: hidden; background: var(--hover);" id="dropzone">
+                <input type="file" id="imgUpload" accept="image/jpeg, image/png, image/webp" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
+                <div style="font-weight: 800; color: var(--text-muted); font-size: 1.2rem; margin-bottom: 1rem;">Drag & Drop Image Here</div>
+                <button class="btn-secondary">Or Browse Files</button>
+            </div>
+            
+            <div id="controls" style="display: none; margin-bottom: 2rem; text-align: left;">
+                <label style="font-weight: 800; display: block; margin-bottom: 1rem; color: var(--text-muted);">Compression Quality: <span id="qVal">80</span>%</label>
+                <input type="range" id="qSlider" min="0" max="100" value="80" style="width: 100%; margin-bottom: 2rem;">
+                
+                <div style="display: flex; gap: 2rem; justify-content: space-between; margin-bottom: 2rem;">
+                    <div class="result-box" style="flex: 1; padding: 1.5rem; text-align: center; border-radius: 16px;">
+                        <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: var(--text-muted);">Original Size</div>
+                        <div id="origSize" style="font-size: 1.5rem; font-weight: 900; margin-top: 0.5rem;">0 KB</div>
+                    </div>
+                    <div class="result-box" style="flex: 1; padding: 1.5rem; text-align: center; border-radius: 16px; border: 1px solid #00e676;">
+                        <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: #00e676;">Compressed Size</div>
+                        <div id="newSize" style="font-size: 1.5rem; font-weight: 900; margin-top: 0.5rem; color: #00e676;">0 KB</div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn-prestige" style="flex: 1;" onclick="downloadImg()">Download Compressed</button>
+                    <button class="btn-secondary" style="flex: 1;" onclick="reset()">Start Over</button>
+                </div>
+            </div>
+        </div>
     
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
     </main>
-                    <footer class="site-footer">
+
+<footer class="site-footer">
         <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 3rem; padding-bottom: 4rem;">
             <div style="grid-column: 1 / -1; margin-bottom: 2rem;">
                 <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
@@ -127,5 +142,73 @@
         </div>
     </footer>
     <script src="app.js"></script>
+    <script>
+        const upload = document.getElementById('imgUpload');
+        const controls = document.getElementById('controls');
+        const dropzone = document.getElementById('dropzone');
+        const qSlider = document.getElementById('qSlider');
+        const qVal = document.getElementById('qVal');
+        
+        let origFile = null;
+        let compressedBlob = null;
+        
+        upload.addEventListener('change', (e) => {
+            if(e.target.files.length > 0) {
+                origFile = e.target.files[0];
+                document.getElementById('origSize').innerText = (origFile.size / 1024).toFixed(2) + ' KB';
+                dropzone.style.display = 'none';
+                controls.style.display = 'block';
+                compress();
+            }
+        });
+        
+        qSlider.addEventListener('input', (e) => {
+            qVal.innerText = e.target.value;
+            compress();
+        });
+        
+        function compress() {
+            if(!origFile) return;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    
+                    const quality = parseInt(qSlider.value) / 100;
+                    canvas.toBlob((blob) => {
+                        compressedBlob = blob;
+                        document.getElementById('newSize').innerText = (blob.size / 1024).toFixed(2) + ' KB';
+                    }, 'image/jpeg', quality);
+                }
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(origFile);
+        }
+        
+        function downloadImg() {
+            if(!compressedBlob) return;
+            const url = URL.createObjectURL(compressedBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'compressed_' + origFile.name.replace(/\.[^/.]+$/, "") + '.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function reset() {
+            origFile = null;
+            compressedBlob = null;
+            upload.value = '';
+            controls.style.display = 'none';
+            dropzone.style.display = 'block';
+        }
+    </script>
 </body>
 </html>
