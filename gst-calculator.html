@@ -3,15 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator | easyytools.com</title>
+    <title>GST Calculator | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
-    <style>
-        .calc-display { background: var(--glass); padding: 3rem 2rem; text-align: right; font-size: 4rem; font-weight: 900; border-radius: 24px; margin-bottom: 2rem; border: 1px solid var(--border); line-height: 1; }
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-        .calc-btn { padding: 1.75rem; border: 1px solid var(--border); background: var(--glass); border-radius: 16px; font-size: 1.5rem; font-weight: 800; color: var(--text); cursor: pointer; transition: 0.2s; }
-        .calc-btn:hover { background: var(--hover); transform: translateY(-2px); }
-        .calc-btn.op { color: var(--text-muted); }
-    </style>
 </head>
 <body>
     <div id="toast">Copied to clipboard</div>
@@ -34,36 +27,47 @@
         <a href="contact.html" onclick="toggleMenu()">Contact</a>
     </div>
 
-    <main class="tool-view-prestige" style="max-width: 500px;">
+
+    <main class="tool-view-prestige">
+        <a href="index.html" class="btn-back">← Back</a>
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
 
-        <div class="calc-display" id="d">0</div>
-        <div class="calc-grid">
-            <button class="calc-btn op" onclick="clr()">C</button>
-            <button class="calc-btn op" onclick="add('(')">(</button>
-            <button class="calc-btn op" onclick="add(')')">)</button>
-            <button class="calc-btn op" onclick="add('/')">÷</button>
-            <button class="calc-btn" onclick="add('7')">7</button>
-            <button class="calc-btn" onclick="add('8')">8</button>
-            <button class="calc-btn" onclick="add('9')">9</button>
-            <button class="calc-btn op" onclick="add('*')">×</button>
-            <button class="calc-btn" onclick="add('4')">4</button>
-            <button class="calc-btn" onclick="add('5')">5</button>
-            <button class="calc-btn" onclick="add('6')">6</button>
-            <button class="calc-btn op" onclick="add('-')">-</button>
-            <button class="calc-btn" onclick="add('1')">1</button>
-            <button class="calc-btn" onclick="add('2')">2</button>
-            <button class="calc-btn" onclick="add('3')">3</button>
-            <button class="calc-btn op" onclick="add('+')">+</button>
-            <button class="calc-btn" style="grid-column: span 2" onclick="add('0')">0</button>
-            <button class="calc-btn" onclick="add('.')">.</button>
-            <button class="calc-btn" style="background: var(--text); color: var(--bg); border: none;" onclick="res()">=</button>
-        </div>
         
+        <div class="prestige-panel">
+            <h1 style="font-size: clamp(2rem, 8vw, 3rem); font-weight: 900; letter-spacing: -0.05em; margin-bottom: 1rem;">GST Calculator.</h1>
+            <p style="color: var(--text-muted); margin-bottom: 3rem;">Calculate precise Indian Goods and Services Tax metrics.</p>
+
+            <div style="margin-bottom: 2rem;">
+                <label>Amount (₹)</label>
+                <input type="number" id="a" class="search-input" style="text-align: left; font-size: 2rem;" placeholder="0" oninput="c()">
+            </div>
+
+            <div style="margin-bottom: 3rem;">
+                <label>Tax Rate (%)</label>
+                <select id="r" class="search-input" style="text-align: left; appearance: none;" onchange="c()">
+                    <option value="5">5% (Essential)</option>
+                    <option value="12">12% (Standard)</option>
+                    <option value="18" selected>18% (Services)</option>
+                    <option value="28">28% (Luxury)</option>
+                </select>
+            </div>
+
+            <div id="res" style="display: none; border-top: 2px solid var(--text); padding-top: 3rem; margin-top: 3rem;">
+                <div style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;">Total GST</div>
+                <div class="result-display" id="gv">₹0.00</div>
+                <div style="font-size: 1.5rem; font-weight: 700;" id="tv">Total: ₹0.00</div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 3rem;">
+                    <button class="btn-prestige" onclick="copy(document.getElementById('tv').innerText)">Copy Total</button>
+                    <button class="btn-secondary" onclick="location.reload()">Clear</button>
+                </div>
+            </div>
+        </div>
     
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
     </main>
-    <footer class="site-footer">
+
+                <footer class="site-footer">
         <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4rem; padding-bottom: 4rem;">
             <div>
                 <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
@@ -107,10 +111,14 @@
     </footer>
     <script src="app.js"></script>
     <script>
-        let s = "";
-        function add(v) { s += v; document.getElementById('d').innerText = s; }
-        function clr() { s = ""; document.getElementById('d').innerText = "0"; }
-        function res() { try { s = eval(s).toString(); document.getElementById('d').innerText = s; } catch { document.getElementById('d').innerText = "Error"; s = ""; } }
+        function c() {
+            const a = parseFloat(document.getElementById('a').value) || 0;
+            const r = parseFloat(document.getElementById('r').value);
+            const g = (a * r) / 100;
+            document.getElementById('res').style.display = 'block';
+            document.getElementById('gv').innerText = '₹' + g.toLocaleString(undefined, {minimumFractionDigits: 2});
+            document.getElementById('tv').innerText = 'Total: ₹' + (a + g).toLocaleString(undefined, {minimumFractionDigits: 2});
+        }
     </script>
 </body>
 </html>

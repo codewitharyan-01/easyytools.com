@@ -3,60 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SwiftUtils | Minimalist Online Tools</title>
-    <meta name="description" content="A clean, fast, and minimalist collection of essential online tools. Age calculator, word counter, stopwatch, and more.">
+    <title>easyytools.com | Prestige Online Utilities</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <nav>
-        <a href="index.html" class="logo">SwiftUtils</a>
-    </nav>
+    <div id="toast">Copied to clipboard</div>
+        <header class="site-header">
+        <a href="index.html" class="logo">easyytools.com</a>
+        <nav class="desktop-nav">
+            <a href="index.html">Home</a>
+            <a href="index.html#tool-grid">Tools</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+    </header>
+    <div class="mobile-overlay" id="mobile-overlay">
+        <a href="index.html" onclick="toggleMenu()">Home</a>
+        <a href="index.html#tool-grid" onclick="toggleMenu()">Tools</a>
+        <a href="privacy.html" onclick="toggleMenu()">Privacy</a>
+        <a href="contact.html" onclick="toggleMenu()">Contact</a>
+    </div>
 
-    <div class="container">
-        <header>
-            <h1>Essential tools. <br>Simplified.</h1>
-            <p class="subtitle">Quick, privacy-focused utilities for daily tasks.</p>
-        </header>
 
-        <div class="tool-grid">
-            <a href="age-calculator.html" class="tool-card">
-                <span class="tool-icon">📅</span>
-                <h3 class="tool-title">Age Calculator</h3>
-                <p class="tool-desc">Calculate exact age and birthday countdown.</p>
-            </a>
+    <main class="main-content">
+        <section style="text-align: center; padding: 6rem 0;">
+            <h1 style="font-size: clamp(3rem, 10vw, 5.5rem); font-weight: 900; letter-spacing: -0.06em; line-height: 0.9; margin-bottom: 3rem;">
+                Powerfully<br><span style="opacity: 0.3;">Simple.</span>
+            </h1>
+            <input type="text" id="search" class="search-input" style="max-width: 600px; margin: 0 auto; display: block;" placeholder="Search 16+ Prestige Tools..." oninput="filterTools()">
+        </section>
+        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
 
-            <a href="word-counter.html" class="tool-card">
-                <span class="tool-icon">📝</span>
-                <h3 class="tool-title">Word Counter</h3>
-                <p class="tool-desc">Real-time text analysis and reading time.</p>
-            </a>
 
-            <a href="stopwatch.html" class="tool-card">
-                <span class="tool-icon">⏱️</span>
-                <h3 class="tool-title">Stopwatch</h3>
-                <p class="tool-desc">Simple timer with lap functionality.</p>
-            </a>
+        
 
-            <a href="calculator.html" class="tool-card">
-                <span class="tool-icon">➗</span>
-                <h3 class="tool-title">Calculator</h3>
-                <p class="tool-desc">Basic arithmetic operations in a clean UI.</p>
-            </a>
-
-            <a href="alarm.html" class="tool-card">
-                <span class="tool-icon">🔔</span>
-                <h3 class="tool-title">Alarm Clock</h3>
-                <p class="tool-desc">Set reminders with browser notifications.</p>
-            </a>
-
-            <a href="unit-converter.html" class="tool-card">
-                <span class="tool-icon">⚖️</span>
-                <h3 class="tool-title">Unit Converter</h3>
-                <p class="tool-desc">Convert length, weight, and temperature.</p>
-            </a>
+        <div class="tool-grid" id="tool-grid">
+            <!-- All 16 tools as elite cards -->
+            <a href="word-counter.html" class="tool-card"><h3>Word Counter</h3><p>Manuscript analysis and metrics.</p></a>
+            <a href="gst-calculator.html" class="tool-card"><h3>GST Calculator</h3><p>Indian tax processing.</p></a>
+            <a href="age-calculator.html" class="tool-card"><h3>Age Calculator</h3><p>Chronological tracking.</p></a>
+            <a href="password-generator.html" class="tool-card"><h3>Password Gen</h3><p>High-entropy keys.</p></a>
+            <a href="bmi-calculator.html" class="tool-card"><h3>BMI Calculator</h3><p>Body mass evaluation.</p></a>
+            <a href="stopwatch.html" class="tool-card"><h3>Stopwatch</h3><p>Precision timing.</p></a>
+            <a href="qr-generator.html" class="tool-card"><h3>QR Generator</h3><p>Visual pattern gen.</p></a>
+            <a href="calculator.html" class="tool-card"><h3>Calculator</h3><p>Universal arithmetic.</p></a>
+            <a href="case-converter.html" class="tool-card"><h3>Case Converter</h3><p>Text transformation.</p></a>
+            <a href="remove-whitespace.html" class="tool-card"><h3>Clean Text</h3><p>Text normalization.</p></a>
+            <a href="emi-calculator.html" class="tool-card"><h3>EMI Calculator</h3><p>Loan amortization.</p></a>
+            <a href="percentage-calculator.html" class="tool-card"><h3>Percentage Calc</h3><p>Ratio processing.</p></a>
+            <a href="sha256-hasher.html" class="tool-card"><h3>SHA256 Hasher</h3><p>Data encryption.</p></a>
+            <a href="color-picker.html" class="tool-card"><h3>Color Picker</h3><p>Hex/RGB extraction.</p></a>
+            <a href="alarm.html" class="tool-card"><h3>Alarm Clock</h3><p>Temporal alerts.</p></a>
+            <a href="random-number.html" class="tool-card"><h3>Randomizer</h3><p>Stochastic generation.</p></a>
         </div>
 
-        <div class="ad-slot">Space for advertisement</div>
-    </div>
+        
+    
+        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
+    </main>
+
+                <footer class="site-footer">
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4rem; padding-bottom: 4rem;">
+            <div>
+                <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
+                <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">A prestigious collective of high-performance online utilities designed for modern professionals.</p>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Financial & Math</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a href="calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Calculator</a>
+                    <a href="gst-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">GST Calculator</a>
+                    <a href="emi-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">EMI Calculator</a>
+                    <a href="percentage-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Percentage Calc</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Daily Utilities</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a href="age-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Age Calculator</a>
+                    <a href="bmi-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">BMI Calculator</a>
+                    <a href="stopwatch.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Stopwatch</a>
+                    <a href="alarm.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Alarm Clock</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Text & Dev Tools</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a href="word-counter.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Word Counter</a>
+                    <a href="password-generator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Password Gen</a>
+                    <a href="qr-generator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">QR Generator</a>
+                    <a href="sha256-hasher.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">SHA256 Hasher</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 easyytools.com</div>
+            <div class="footer-links">
+                <a href="privacy.html" style="color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Privacy</a>
+                <a href="contact.html" style="color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
 </body>
 </html>

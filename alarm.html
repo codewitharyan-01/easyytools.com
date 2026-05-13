@@ -3,80 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alarm Clock | Online Alarm - SwiftUtils</title>
+    <title>Alarm Clock | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <nav><a href="index.html" class="logo">SwiftUtils</a></nav>
-
-    <div class="container">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h2>Alarm Clock</h2>
-                <p class="subtitle" id="current-time">00:00:00</p>
-            </div>
-
-            <div class="form-group">
-                <label>Set Alarm Time</label>
-                <input type="time" id="alarm-time">
-            </div>
-
-            <button class="btn" onclick="setAlarm()">Set Alarm</button>
-
-            <div id="alarm-status" style="margin-top: 2rem; text-align: center; color: var(--text-muted);">
-                No alarm set.
-            </div>
+    <div id="toast">Copied to clipboard</div>
+        <header class="site-header">
+        <a href="index.html" class="logo">easyytools.com</a>
+        <nav class="desktop-nav">
+            <a href="index.html">Home</a>
+            <a href="index.html#tool-grid">Tools</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
         </div>
+    </header>
+    <div class="mobile-overlay" id="mobile-overlay">
+        <a href="index.html" onclick="toggleMenu()">Home</a>
+        <a href="index.html#tool-grid" onclick="toggleMenu()">Tools</a>
+        <a href="privacy.html" onclick="toggleMenu()">Privacy</a>
+        <a href="contact.html" onclick="toggleMenu()">Contact</a>
     </div>
 
-    <!-- Hidden audio element for alarm sound -->
-    <audio id="alarm-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" loop></audio>
+    <main class="tool-view-prestige" style="text-align: center;">
+        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
 
+        <div class="result-display" id="c" style=" margin: 4rem 0;">00:00:00</div>
+        <div class="prestige-panel" style="max-width: 500px; margin: 0 auto;">
+            <label>Set Alert Time</label>
+            <input type="time" id="t" class="search-input" style="font-size: 2rem; text-align: center; margin-bottom: 2rem;">
+            <button class="btn-prestige" style="width: 100%; justify-content: center;" onclick="set()">Enable Alarm</button>
+            <div id="s" style="margin-top: 2rem; font-weight: 700; color: var(--text-muted);">No alert pending.</div>
+        </div>
+        <audio id="snd" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" loop></audio>
+        
+    
+        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
+    </main>
+    <footer class="site-footer">
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4rem; padding-bottom: 4rem;">
+            <div>
+                <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
+                <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">A prestigious collective of high-performance online utilities designed for modern professionals.</p>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Financial & Math</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a href="calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Calculator</a>
+                    <a href="gst-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">GST Calculator</a>
+                    <a href="emi-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">EMI Calculator</a>
+                    <a href="percentage-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Percentage Calc</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Daily Utilities</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a href="age-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Age Calculator</a>
+                    <a href="bmi-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">BMI Calculator</a>
+                    <a href="stopwatch.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Stopwatch</a>
+                    <a href="alarm.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Alarm Clock</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Text & Dev Tools</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a href="word-counter.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Word Counter</a>
+                    <a href="password-generator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Password Gen</a>
+                    <a href="qr-generator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">QR Generator</a>
+                    <a href="sha256-hasher.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">SHA256 Hasher</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 easyytools.com</div>
+            <div class="footer-links">
+                <a href="privacy.html" style="color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Privacy</a>
+                <a href="contact.html" style="color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Contact</a>
+            </div>
+        </div>
+    </footer>
+    <script src="app.js"></script>
     <script>
-        let alarmTime = null;
-        let alarmTimeout = null;
-
-        function updateClock() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString();
-            document.getElementById('current-time').innerText = timeStr;
-
-            if (alarmTime && now.getHours() === alarmTime.hours && now.getMinutes() === alarmTime.minutes) {
-                triggerAlarm();
+        let aT = null;
+        setInterval(() => {
+            const n = new Date();
+            document.getElementById('c').innerText = n.toLocaleTimeString();
+            if(aT && n.getHours() == aT.h && n.getMinutes() == aT.m) {
+                document.getElementById('snd').play();
+                document.getElementById('s').innerHTML = '<button class="btn-prestige" style="background:red; color:white; width:100%;" onclick="location.reload()">SILENCE ALARM</button>';
+                aT = null;
             }
-        }
-
-        setInterval(updateClock, 1000);
-
-        function setAlarm() {
-            const input = document.getElementById('alarm-time').value;
-            if (!input) {
-                alert("Please select a time.");
-                return;
-            }
-
-            const [hours, minutes] = input.split(':').map(Number);
-            alarmTime = { hours, minutes };
-            document.getElementById('alarm-status').innerText = `Alarm set for ${input}`;
-            document.getElementById('alarm-status').style.color = "var(--text)";
-        }
-
-        function triggerAlarm() {
-            const sound = document.getElementById('alarm-sound');
-            sound.play();
-            alarmTime = null; // Reset
-            document.getElementById('alarm-status').innerHTML = `
-                <div style="color: red; font-weight: 600; margin-bottom: 1rem;">ALARM RINGING!</div>
-                <button class="btn" onclick="stopAlarm()">Stop</button>
-            `;
-        }
-
-        function stopAlarm() {
-            const sound = document.getElementById('alarm-sound');
-            sound.pause();
-            sound.currentTime = 0;
-            document.getElementById('alarm-status').innerText = "No alarm set.";
-            document.getElementById('alarm-status').style.color = "var(--text-muted)";
+        }, 1000);
+        function set() {
+            const v = document.getElementById('t').value;
+            if(!v) return;
+            const [h, m] = v.split(':').map(Number);
+            aT = {h, m};
+            document.getElementById('s').innerText = `Alert active for ${v}`;
+            showToast("Alarm Enabled");
         }
     </script>
 </body>

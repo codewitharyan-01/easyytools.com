@@ -3,90 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stopwatch | Simple Online Timer - SwiftUtils</title>
+    <title>Stopwatch | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <nav><a href="index.html" class="logo">SwiftUtils</a></nav>
-
-    <div class="container">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h2>Stopwatch</h2>
-                <p class="subtitle">A clean, distraction-free timer.</p>
-            </div>
-
-            <div class="stopwatch-display" id="display">00:00:00.00</div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <button class="btn" id="startBtn" onclick="toggleStart()">Start</button>
-                <button class="btn" style="background: var(--hover); color: var(--text);" onclick="reset()">Reset</button>
-            </div>
-
-            <div id="laps" style="margin-top: 2rem; max-height: 200px; overflow-y: auto; border-top: 1px solid var(--border); padding-top: 1rem;">
-                <!-- Laps will appear here -->
-            </div>
+    <div id="toast">Copied to clipboard</div>
+        <header class="site-header">
+        <a href="index.html" class="logo">easyytools.com</a>
+        <nav class="desktop-nav">
+            <a href="index.html">Home</a>
+            <a href="index.html#tool-grid">Tools</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
         </div>
+    </header>
+    <div class="mobile-overlay" id="mobile-overlay">
+        <a href="index.html" onclick="toggleMenu()">Home</a>
+        <a href="index.html#tool-grid" onclick="toggleMenu()">Tools</a>
+        <a href="privacy.html" onclick="toggleMenu()">Privacy</a>
+        <a href="contact.html" onclick="toggleMenu()">Contact</a>
     </div>
 
+    <main class="tool-view-prestige">
+        <a href="index.html" class="btn-back">← Back</a>
+        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
+
+        <div class="prestige-panel" style="text-align: center;">
+            <h1 style="font-size: clamp(2rem, 8vw, 3rem); font-weight: 900; margin-bottom: 1rem;">Stopwatch.</h1>
+            <div class="result-display" id="d" style=" font-variant-numeric: tabular-nums;">00:00.00</div>
+            <div style="display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 3rem;">
+                <button class="btn-prestige" id="sB" style="min-width: 150px; justify-content: center;" onclick="toggle()">Start</button>
+                <button class="btn-secondary" onclick="reset()">Reset</button>
+            </div>
+            
+        </div>
+    
+        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
+    </main>
+    <footer class="site-footer">
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4rem; padding-bottom: 4rem;">
+            <div>
+                <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
+                <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">A prestigious collective of high-performance online utilities designed for modern professionals.</p>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Financial & Math</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a href="calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Calculator</a>
+                    <a href="gst-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">GST Calculator</a>
+                    <a href="emi-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">EMI Calculator</a>
+                    <a href="percentage-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Percentage Calc</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Daily Utilities</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a href="age-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Age Calculator</a>
+                    <a href="bmi-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">BMI Calculator</a>
+                    <a href="stopwatch.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Stopwatch</a>
+                    <a href="alarm.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Alarm Clock</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Text & Dev Tools</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a href="word-counter.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Word Counter</a>
+                    <a href="password-generator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Password Gen</a>
+                    <a href="qr-generator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">QR Generator</a>
+                    <a href="sha256-hasher.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">SHA256 Hasher</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 easyytools.com</div>
+            <div class="footer-links">
+                <a href="privacy.html" style="color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Privacy</a>
+                <a href="contact.html" style="color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Contact</a>
+            </div>
+        </div>
+    </footer>
+    <script src="app.js"></script>
     <script>
-        let startTime;
-        let elapsedTime = 0;
-        let timerInterval;
-
-        function timeToString(time) {
-            let diffInHrs = time / 3600000;
-            let hh = Math.floor(diffInHrs);
-
-            let diffInMin = (diffInHrs - hh) * 60;
-            let mm = Math.floor(diffInMin);
-
-            let diffInSec = (diffInMin - mm) * 60;
-            let ss = Math.floor(diffInSec);
-
-            let diffInMs = (diffInSec - ss) * 100;
-            let ms = Math.floor(diffInMs);
-
-            let formattedMM = mm.toString().padStart(2, "0");
-            let formattedSS = ss.toString().padStart(2, "0");
-            let formattedMS = ms.toString().padStart(2, "0");
-
-            return `${formattedMM}:${formattedSS}.${formattedMS}`;
+        let sT, eT = 0, tI;
+        function tS(t) {
+            let m = Math.floor(t / 60000);
+            let s = Math.floor((t % 60000) / 1000);
+            let ms = Math.floor((t % 1000) / 10);
+            return `${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}.${ms.toString().padStart(2,"0")}`;
         }
-
-        function print(txt) {
-            document.getElementById("display").innerHTML = txt;
+        function toggle() {
+            const b = document.getElementById('sB');
+            if (b.innerText === "START") {
+                sT = Date.now() - eT;
+                tI = setInterval(() => { eT = Date.now() - sT; document.getElementById('d').innerText = tS(eT); }, 10);
+                b.innerText = "PAUSE";
+            } else { clearInterval(tI); b.innerText = "START"; }
         }
-
-        function start() {
-            startTime = Date.now() - elapsedTime;
-            timerInterval = setInterval(function printTime() {
-                elapsedTime = Date.now() - startTime;
-                print(timeToString(elapsedTime));
-            }, 10);
-            document.getElementById("startBtn").innerText = "Pause";
-        }
-
-        function pause() {
-            clearInterval(timerInterval);
-            document.getElementById("startBtn").innerText = "Start";
-        }
-
-        function reset() {
-            clearInterval(timerInterval);
-            print("00:00.00");
-            elapsedTime = 0;
-            document.getElementById("startBtn").innerText = "Start";
-            document.getElementById("laps").innerHTML = "";
-        }
-
-        function toggleStart() {
-            if (document.getElementById("startBtn").innerText === "Start") {
-                start();
-            } else {
-                pause();
-            }
-        }
+        function reset() { clearInterval(tI); eT = 0; document.getElementById('d').innerText = "00:00.00"; document.getElementById('sB').innerText = "START"; }
     </script>
 </body>
 </html>

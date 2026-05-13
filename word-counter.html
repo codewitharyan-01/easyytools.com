@@ -3,34 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word Counter | SwiftUtils</title>
+    <title>Word Counter | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <nav><a href="index.html" class="logo">SwiftUtils</a></nav>
-    <div class="container">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h2>Word Counter</h2>
-            </div>
-            <textarea id="input" style="height: 250px;" placeholder="Type or paste here..." oninput="count()"></textarea>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <div class="result-box" style="padding: 1.5rem;">
-                    <div class="result-val" id="words">0</div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted);">Words</div>
+    <div id="toast">Copied to clipboard</div>
+        <header class="site-header">
+        <a href="index.html" class="logo">easyytools.com</a>
+        <nav class="desktop-nav">
+            <a href="index.html">Home</a>
+            <a href="index.html#tool-grid">Tools</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+    </header>
+    <div class="mobile-overlay" id="mobile-overlay">
+        <a href="index.html" onclick="toggleMenu()">Home</a>
+        <a href="index.html#tool-grid" onclick="toggleMenu()">Tools</a>
+        <a href="privacy.html" onclick="toggleMenu()">Privacy</a>
+        <a href="contact.html" onclick="toggleMenu()">Contact</a>
+    </div>
+
+
+    <main class="tool-view-prestige" style="max-width: 1000px;">
+        <a href="index.html" class="btn-back">← Back</a>
+        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
+
+        
+        <div class="prestige-panel">
+            <h1 style="font-size: clamp(2rem, 8vw, 3rem); font-weight: 900; letter-spacing: -0.05em; margin-bottom: 3rem;">Word Count.</h1>
+
+            <textarea id="in" class="search-input" style="height: 350px; text-align: left; font-size: 1.1rem; border-radius: 24px; padding: 2rem;" placeholder="Paste your manuscript here..." oninput="c()"></textarea>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 4rem;">
+                <div class="result-box" style="text-align: center; background: var(--hover); padding: 2rem; border-radius: 16px;">
+                    <div id="w" style="font-size: 2.5rem; font-weight: 900;">0</div>
+                    <div style="font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Words</div>
                 </div>
-                <div class="result-box" style="padding: 1.5rem;">
-                    <div class="result-val" id="chars">0</div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted);">Characters</div>
+                <div class="result-box" style="text-align: center; background: var(--hover); padding: 2rem; border-radius: 16px;">
+                    <div id="ch" style="font-size: 2.5rem; font-weight: 900;">0</div>
+                    <div style="font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Chars</div>
+                </div>
+                <div class="result-box" style="text-align: center; background: var(--hover); padding: 2rem; border-radius: 16px;">
+                    <div id="t" style="font-size: 2.5rem; font-weight: 900;">0m</div>
+                    <div style="font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Read Time</div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 4rem;">
+                <button class="btn-prestige" onclick="copyResults()">Copy Stats</button>
+                <button class="btn-secondary" onclick="document.getElementById('in').value=''; c();">Clear</button>
+            </div>
+        </div>
+    
+        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
+    </main>
+
+                <footer class="site-footer">
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4rem; padding-bottom: 4rem;">
+            <div>
+                <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
+                <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">A prestigious collective of high-performance online utilities designed for modern professionals.</p>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Financial & Math</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a href="calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Calculator</a>
+                    <a href="gst-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">GST Calculator</a>
+                    <a href="emi-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">EMI Calculator</a>
+                    <a href="percentage-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Percentage Calc</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Daily Utilities</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a href="age-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Age Calculator</a>
+                    <a href="bmi-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">BMI Calculator</a>
+                    <a href="stopwatch.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Stopwatch</a>
+                    <a href="alarm.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Alarm Clock</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Text & Dev Tools</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a href="word-counter.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Word Counter</a>
+                    <a href="password-generator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Password Gen</a>
+                    <a href="qr-generator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">QR Generator</a>
+                    <a href="sha256-hasher.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">SHA256 Hasher</a>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="footer-bottom">
+            <div style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 easyytools.com</div>
+            <div class="footer-links">
+                <a href="privacy.html" style="color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Privacy</a>
+                <a href="contact.html" style="color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Contact</a>
+            </div>
+        </div>
+    </footer>
+    <script src="app.js"></script>
     <script>
-        function count() {
-            const text = document.getElementById('input').value.trim();
-            document.getElementById('words').innerText = text ? text.split(/\s+/).length : 0;
-            document.getElementById('chars').innerText = text.length;
+        function c() {
+            const v = document.getElementById('in').value.trim();
+            const w = v ? v.split(/\s+/).length : 0;
+            document.getElementById('w').innerText = w;
+            document.getElementById('ch').innerText = v.length;
+            document.getElementById('t').innerText = Math.ceil(w/200) + "m";
+        }
+        function copyResults() {
+            const w = document.getElementById('w').innerText;
+            const ch = document.getElementById('ch').innerText;
+            const t = document.getElementById('t').innerText;
+            copy(`Words: ${w} | Chars: ${ch} | Read Time: ${t}`);
         }
     </script>
 </body>
