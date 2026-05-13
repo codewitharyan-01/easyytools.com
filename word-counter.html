@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Counter | SwiftUtils</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <nav><a href="index.html" class="logo">SwiftUtils</a></nav>
+    <div class="container">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h2>Word Counter</h2>
+            </div>
+            <textarea id="input" style="height: 250px;" placeholder="Type or paste here..." oninput="count()"></textarea>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="result-box" style="padding: 1.5rem;">
+                    <div class="result-val" id="words">0</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Words</div>
+                </div>
+                <div class="result-box" style="padding: 1.5rem;">
+                    <div class="result-val" id="chars">0</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Characters</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function count() {
+            const text = document.getElementById('input').value.trim();
+            document.getElementById('words').innerText = text ? text.split(/\s+/).length : 0;
+            document.getElementById('chars').innerText = text.length;
+        }
+    </script>
+</body>
+</html>

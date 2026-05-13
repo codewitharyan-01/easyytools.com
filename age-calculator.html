@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator | SwiftUtils</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <nav><a href="index.html" class="logo">SwiftUtils</a></nav>
+    <div class="container">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h2>Age Calculator</h2>
+            </div>
+            <label>Date of Birth</label>
+            <input type="date" id="dob">
+            <button class="btn" onclick="calculate()">Calculate</button>
+            <div class="result-box" id="result" style="display: none;">
+                <div class="result-val" id="age-val">0 Years</div>
+                <p class="subtitle" id="next-bday"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function calculate() {
+            const dob = new Date(document.getElementById('dob').value);
+            if (isNaN(dob)) return;
+            const now = new Date();
+            let years = now.getFullYear() - dob.getFullYear();
+            const m = now.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) years--;
+            
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('age-val').innerText = years + " Years Old";
+        }
+    </script>
+</body>
+</html>

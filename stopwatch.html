@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch | Simple Online Timer - SwiftUtils</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <nav><a href="index.html" class="logo">SwiftUtils</a></nav>
+
+    <div class="container">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h2>Stopwatch</h2>
+                <p class="subtitle">A clean, distraction-free timer.</p>
+            </div>
+
+            <div class="stopwatch-display" id="display">00:00:00.00</div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <button class="btn" id="startBtn" onclick="toggleStart()">Start</button>
+                <button class="btn" style="background: var(--hover); color: var(--text);" onclick="reset()">Reset</button>
+            </div>
+
+            <div id="laps" style="margin-top: 2rem; max-height: 200px; overflow-y: auto; border-top: 1px solid var(--border); padding-top: 1rem;">
+                <!-- Laps will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let startTime;
+        let elapsedTime = 0;
+        let timerInterval;
+
+        function timeToString(time) {
+            let diffInHrs = time / 3600000;
+            let hh = Math.floor(diffInHrs);
+
+            let diffInMin = (diffInHrs - hh) * 60;
+            let mm = Math.floor(diffInMin);
+
+            let diffInSec = (diffInMin - mm) * 60;
+            let ss = Math.floor(diffInSec);
+
+            let diffInMs = (diffInSec - ss) * 100;
+            let ms = Math.floor(diffInMs);
+
+            let formattedMM = mm.toString().padStart(2, "0");
+            let formattedSS = ss.toString().padStart(2, "0");
+            let formattedMS = ms.toString().padStart(2, "0");
+
+            return `${formattedMM}:${formattedSS}.${formattedMS}`;
+        }
+
+        function print(txt) {
+            document.getElementById("display").innerHTML = txt;
+        }
+
+        function start() {
+            startTime = Date.now() - elapsedTime;
+            timerInterval = setInterval(function printTime() {
+                elapsedTime = Date.now() - startTime;
+                print(timeToString(elapsedTime));
+            }, 10);
+            document.getElementById("startBtn").innerText = "Pause";
+        }
+
+        function pause() {
+            clearInterval(timerInterval);
+            document.getElementById("startBtn").innerText = "Start";
+        }
+
+        function reset() {
+            clearInterval(timerInterval);
+            print("00:00.00");
+            elapsedTime = 0;
+            document.getElementById("startBtn").innerText = "Start";
+            document.getElementById("laps").innerHTML = "";
+        }
+
+        function toggleStart() {
+            if (document.getElementById("startBtn").innerText === "Start") {
+                start();
+            } else {
+                pause();
+            }
+        }
+    </script>
+</body>
+</html>

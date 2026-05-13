@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator | Simple Online Calculator - SwiftUtils</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .calc-display {
+            width: 100%;
+            background: var(--hover);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            text-align: right;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            border-radius: var(--radius);
+            min-height: 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <nav><a href="index.html" class="logo">SwiftUtils</a></nav>
+
+    <div class="container">
+        <div class="tool-container" style="max-width: 400px;">
+            <div class="tool-header">
+                <h2>Calculator</h2>
+            </div>
+
+            <div class="calc-display" id="display">0</div>
+
+            <div class="calc-grid">
+                <button class="calc-btn op" onclick="clearDisplay()">C</button>
+                <button class="calc-btn op" onclick="append('(')">(</button>
+                <button class="calc-btn op" onclick="append(')')">)</button>
+                <button class="calc-btn op" onclick="append('/')">/</button>
+
+                <button class="calc-btn" onclick="append('7')">7</button>
+                <button class="calc-btn" onclick="append('8')">8</button>
+                <button class="calc-btn" onclick="append('9')">9</button>
+                <button class="calc-btn op" onclick="append('*')">×</button>
+
+                <button class="calc-btn" onclick="append('4')">4</button>
+                <button class="calc-btn" onclick="append('5')">5</button>
+                <button class="calc-btn" onclick="append('6')">6</button>
+                <button class="calc-btn op" onclick="append('-')">-</button>
+
+                <button class="calc-btn" onclick="append('1')">1</button>
+                <button class="calc-btn" onclick="append('2')">2</button>
+                <button class="calc-btn" onclick="append('3')">3</button>
+                <button class="calc-btn op" onclick="append('+')">+</button>
+
+                <button class="calc-btn" onclick="append('0')">0</button>
+                <button class="calc-btn" onclick="append('.')">.</button>
+                <button class="calc-btn" onclick="calculate()" style="grid-column: span 2; background: var(--accent); color: var(--bg); border: none;">=</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+        let currentInput = '';
+
+        function append(val) {
+            if (currentInput === '0' && val !== '.') currentInput = '';
+            currentInput += val;
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentInput = '0';
+            updateDisplay();
+        }
+
+        function calculate() {
+            try {
+                currentInput = eval(currentInput).toString();
+            } catch {
+                currentInput = 'Error';
+            }
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            display.innerText = currentInput || '0';
+        }
+    </script>
+</body>
+</html>
