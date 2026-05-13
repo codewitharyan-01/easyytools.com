@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Checker | easyytools.com</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="toast">Copied to clipboard</div>
+        <header class="site-header">
+        <a href="index.html" class="logo">easyytools.com</a>
+        <nav class="desktop-nav">
+            <a href="index.html">Home</a>
+            <a href="index.html#tool-grid">Tools</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+    </header>
+    <div class="mobile-overlay" id="mobile-overlay">
+        <a href="index.html" onclick="toggleMenu()">Home</a>
+        <a href="index.html#tool-grid" onclick="toggleMenu()">Tools</a>
+        <a href="privacy.html" onclick="toggleMenu()">Privacy</a>
+        <a href="contact.html" onclick="toggleMenu()">Contact</a>
+    </div>
+
+
+    <main class="tool-view-prestige" style="max-width: 1000px;">
+        <a href="index.html" class="btn-back">← Back</a>
+        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
+        
+        <div class="prestige-panel animate-up">
+            <h1 class="hero-title">Grammar Check.</h1>
+            <textarea id="in" class="search-input" style="height: 300px; text-align: left; font-size: 1.1rem; border-radius: 24px; padding: 2rem; margin-bottom: 2rem; line-height: 1.6;" placeholder="Paste your text here to check for spelling and grammar errors..."></textarea>
+                        <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
+                <button class="btn-prestige" onclick="checkGrammar()" id="chkBtn">Check Text</button>
+                <button class="btn-secondary" onclick="document.getElementById('in').value=''; document.getElementById('results-container').style.display='none'; document.getElementById('out').innerHTML='';">Clear</button>
+            </div>
+            
+            <div id="out" style="text-align: center; color: var(--text-muted); font-weight: 700; margin-bottom: 2rem;"></div>
+
+            <div id="results-container" style="display: none; text-align: left;">
+                <div style="display: flex; flex-wrap: wrap; gap: 2rem; margin-bottom: 3rem;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <label style="font-weight: 800; display: block; margin-bottom: 1rem; color: #ff4444; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem;">Issues Highlighted</label>
+                        <div class="result-box" id="highlight-box" style="background: var(--hover); padding: 1.5rem; border-radius: 16px; min-height: 200px; line-height: 1.8; color: var(--text); white-space: pre-wrap; font-size: 1.1rem;"></div>
+                    </div>
+
+                    <div style="flex: 1; min-width: 300px;">
+                        <label style="font-weight: 800; display: block; margin-bottom: 1rem; color: #00e676; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem;">Auto-Corrected Version</label>
+                        <div class="result-box" style="background: var(--hover); padding: 1.5rem; border-radius: 16px; min-height: 200px; position: relative; display: flex; flex-direction: column;">
+                            <div id="corrected-box" style="line-height: 1.8; color: var(--text); white-space: pre-wrap; font-size: 1.1rem; flex-grow: 1; margin-bottom: 1rem;"></div>
+                            <button class="btn-secondary" style="align-self: flex-end; padding: 0.5rem 1.5rem;" onclick="copy(document.getElementById('corrected-box').innerText)">Copy Text</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
+    </main>
+
+    <footer class="site-footer">
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 3rem; padding-bottom: 4rem;">
+            <div style="grid-column: 1 / -1; margin-bottom: 2rem;">
+                <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
+                <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem; max-width: 400px;">A prestigious collective of high-performance online utilities designed for modern professionals.</p>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Financial & Math</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="calculator.html" class="footer-link">Calculator</a>
+                    <a href="gst-calculator.html" class="footer-link">GST Calculator</a>
+                    <a href="emi-calculator.html" class="footer-link">EMI Calculator</a>
+                    <a href="percentage-calculator.html" class="footer-link">Percentage Calc</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Daily Utilities</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="age-calculator.html" class="footer-link">Age Calculator</a>
+                    <a href="bmi-calculator.html" class="footer-link">BMI Calculator</a>
+                    <a href="stopwatch.html" class="footer-link">Stopwatch</a>
+                    <a href="alarm.html" class="footer-link">Alarm Clock</a>
+                    <a href="pomodoro.html" class="footer-link">Pomodoro Timer</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Text & Media</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="word-counter.html" class="footer-link">Word Counter</a>
+                    <a href="grammar-checker.html" class="footer-link">Grammar Checker</a>
+                    <a href="case-converter.html" class="footer-link">Case Converter</a>
+                    <a href="remove-whitespace.html" class="footer-link">Remove Whitespace</a>
+                    <a href="markdown-preview.html" class="footer-link">Markdown Preview</a>
+                    <a href="qr-generator.html" class="footer-link">QR Generator</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Dev & Security</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="password-generator.html" class="footer-link">Password Gen</a>
+                    <a href="sha256-hasher.html" class="footer-link">SHA256 Hasher</a>
+                    <a href="base64.html" class="footer-link">Base64 Encoder</a>
+                    <a href="url-encoder.html" class="footer-link">URL Encoder</a>
+                    <a href="uuid-generator.html" class="footer-link">UUID Generator</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Web Utilities</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="json-formatter.html" class="footer-link">JSON Formatter</a>
+                    <a href="css-minifier.html" class="footer-link">CSS Minifier</a>
+                    <a href="regex-tester.html" class="footer-link">Regex Matcher</a>
+                    <a href="color-picker.html" class="footer-link">Color Picker</a>
+                    <a href="random-number.html" class="footer-link">Random Number</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 easyytools.com</div>
+            <div class="footer-links">
+                <a href="privacy.html" class="footer-link" style="font-weight: 700;">Privacy</a>
+                <a href="contact.html" class="footer-link" style="font-weight: 700;">Contact</a>
+            </div>
+        </div>
+    </footer>
+    <script src="app.js"></script>
+    <script>
+        async function checkGrammar() {
+            const text = document.getElementById('in').value;
+            const out = document.getElementById('out');
+            const btn = document.getElementById('chkBtn');
+            const resContainer = document.getElementById('results-container');
+            const hBox = document.getElementById('highlight-box');
+            const cBox = document.getElementById('corrected-box');
+            
+            if(!text.trim()) {
+                showToast("Please enter some text.");
+                return;
+            }
+            
+            btn.innerText = "Checking...";
+            btn.style.opacity = "0.7";
+            out.innerHTML = "Analyzing text...";
+            resContainer.style.display = "none";
+            
+            try {
+                const res = await fetch('https://api.languagetoolplus.com/v2/check', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        text: text,
+                        language: 'en-US'
+                    })
+                });
+                
+                if(!res.ok) throw new Error("API Error");
+                const data = await res.json();
+                
+                out.innerHTML = "";
+                resContainer.style.display = "block";
+                
+                if(data.matches.length === 0) {
+                    out.innerHTML = '<span style="color: #00e676; font-weight: 800; font-size: 1.2rem;">No errors found! Perfect writing.</span>';
+                    hBox.innerText = text;
+                    cBox.innerText = text;
+                } else {
+                    out.innerHTML = `<span style="color: #ff4444; font-weight: 800; font-size: 1.2rem;">Found ${data.matches.length} Issues</span>`;
+                    
+                    // 1. Build Highlighted Box safely via DOM manipulation
+                    hBox.innerHTML = '';
+                    let lastIndex = 0;
+                    data.matches.forEach(m => {
+                        if (m.offset > lastIndex) {
+                            hBox.appendChild(document.createTextNode(text.substring(lastIndex, m.offset)));
+                        }
+                        const span = document.createElement('span');
+                        span.style.cssText = "background: rgba(255, 68, 68, 0.2); border-bottom: 2px solid #ff4444; padding: 0.1rem 0.3rem; border-radius: 4px; font-weight: 700; cursor: help;";
+                        span.title = m.message;
+                        span.innerText = text.substring(m.offset, m.offset + m.length);
+                        hBox.appendChild(span);
+                        lastIndex = m.offset + m.length;
+                    });
+                    if (lastIndex < text.length) {
+                        hBox.appendChild(document.createTextNode(text.substring(lastIndex)));
+                    }
+
+                    // 2. Build Auto-Corrected Box
+                    let correctedText = text;
+                    // Sort matches backwards by offset to avoid shifting issues when replacing
+                    const sortedMatches = [...data.matches].sort((a, b) => b.offset - a.offset);
+                    sortedMatches.forEach(m => {
+                        if (m.replacements && m.replacements.length > 0) {
+                            const replacement = m.replacements[0].value;
+                            correctedText = correctedText.substring(0, m.offset) + replacement + correctedText.substring(m.offset + m.length);
+                        }
+                    });
+                    cBox.innerText = correctedText;
+                }
+            } catch(e) {
+                out.innerHTML = '<span style="color: #ff4444; font-weight: 700;">Error contacting grammar engine. Please try again later.</span>';
+            } finally {
+                btn.innerText = "Check Text";
+                btn.style.opacity = "1";
+            }
+        }
+    </script>
+</body>
+</html>
