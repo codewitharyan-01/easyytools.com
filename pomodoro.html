@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMI Calculator | easyytools.com</title>
+    <title>Pomodoro Timer | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
@@ -27,28 +27,20 @@
         <a href="contact.html" onclick="toggleMenu()">Contact</a>
     </div>
 
-    <main class="tool-view-prestige">
+
+    <main class="tool-view-prestige" style="max-width: 1000px;">
         <a href="index.html" class="btn-back">← Back</a>
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
-
         
         <div class="prestige-panel animate-up">
-            <h1 class="hero-title">BMI Calc.</h1>
-            <label>Weight (kg)</label>
-            <input type="number" id="w" class="search-input" style="margin-bottom: 2rem;" placeholder="e.g. 70" oninput="calc()">
-            <label>Height (cm)</label>
-            <input type="number" id="h" class="search-input" style="margin-bottom: 3rem;" placeholder="e.g. 175" oninput="calc()">
-            <div id="res" style="display: none; border-top: 1px solid var(--border); padding-top: 3rem;">
-                <div class="result-display" id="val">0.0</div>
-                <div id="st" style="font-size: 1.5rem; font-weight: 800; text-transform: uppercase; margin-bottom: 3rem;"></div>
-                <button class="btn-prestige" onclick="copy('BMI: '+document.getElementById('val').innerText+' ('+document.getElementById('st').innerText+')')">Copy Results</button>
-            </div>
+            <h1 class="hero-title">Pomodoro.</h1>
+            
         </div>
-        
     
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
     </main>
-        <footer class="site-footer">
+
+    <footer class="site-footer">
         <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 3rem; padding-bottom: 4rem;">
             <div style="grid-column: 1 / -1; margin-bottom: 2rem;">
                 <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
@@ -114,21 +106,7 @@
     </footer>
     <script src="app.js"></script>
     <script>
-        function calc() {
-            const w = parseFloat(document.getElementById('w').value);
-            const h = parseFloat(document.getElementById('h').value) / 100;
-            if(w && h) {
-                const bmi = w / (h * h);
-                document.getElementById('res').style.display = 'block';
-                document.getElementById('val').innerText = bmi.toFixed(1);
-                let s = "";
-                if(bmi < 18.5) s = "Underweight";
-                else if(bmi < 25) s = "Healthy";
-                else if(bmi < 30) s = "Overweight";
-                else s = "Obese";
-                document.getElementById('st').innerText = s;
-            }
-        }
+        
     </script>
 </body>
 </html>

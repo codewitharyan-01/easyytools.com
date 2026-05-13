@@ -13,9 +13,12 @@ function filterTools() {
 
         if (title.includes(query) || desc.includes(query) || tags.includes(query)) {
             item.style.display = 'block';
-            item.style.animation = 'fadeIn 0.5s ease-out';
+            item.style.animation = 'fadeInUp 0.5s ease-out forwards';
+            item.classList.add('visible');
         } else {
             item.style.display = 'none';
+            item.classList.remove('visible');
+            item.style.animation = 'none';
         }
     });
 }
@@ -60,3 +63,27 @@ function downloadQR(canvasId) {
     link.click();
     showToast("Downloading QR Code...");
 }
+
+// Intersection Observer for scroll animations
+document.addEventListener("DOMContentLoaded", () => {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    const cards = document.querySelectorAll('.tool-card');
+    cards.forEach((card, index) => {
+        // Stagger effect for initial load vs scroll
+        card.style.transitionDelay = `${(index % 10) * 0.05}s`; 
+        observer.observe(card);
+    });
+});

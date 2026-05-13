@@ -26,6 +26,46 @@
     }
 }
 
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.animate-up {
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.hero-title {
+    font-size: clamp(3rem, 10vw, 5.5rem);
+    font-weight: 900;
+    letter-spacing: -0.06em;
+    line-height: 0.9;
+    margin-bottom: 3rem;
+    background: linear-gradient(to right, var(--text), var(--text-muted), var(--text));
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: gradientShift 6s ease infinite;
+}
+
+.hero-title span {
+    opacity: 0.4;
+    color: var(--text-muted);
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font); -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
 
 body { 
@@ -96,13 +136,43 @@ body {
     border-radius: var(--radius);
     text-decoration: none;
     color: inherit;
-    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.tool-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 50%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+    transform: skewX(-20deg);
+    transition: 0.7s;
+}
+
+@media (prefers-color-scheme: dark) {
+    .tool-card::before {
+        background: linear-gradient(to right, transparent, rgba(0,0,0,0.03), transparent);
+    }
+}
+
+.tool-card:hover::before {
+    left: 150%;
 }
 
 .tool-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
     background: var(--hover);
     border-color: var(--text);
+    box-shadow: var(--shadow);
 }
 
 .tool-card h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
@@ -118,6 +188,7 @@ body {
     padding: 4rem;
     backdrop-filter: blur(12px);
     position: relative;
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .search-input {
@@ -129,10 +200,20 @@ body {
     color: var(--text);
     border-radius: 16px;
     outline: none;
-    transition: 0.3s;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.search-input:focus { border-color: var(--text); background: var(--hover); }
+.search-input:focus { 
+    border-color: var(--text); 
+    background: var(--hover); 
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1); 
+    transform: translateY(-2px);
+}
+@media (prefers-color-scheme: dark) {
+    .search-input:focus {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); 
+    }
+}
 
 .btn-prestige {
     background: var(--text);
@@ -217,6 +298,8 @@ body {
     display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
 }
 .footer-links { display: flex; gap: 2rem; }
+.footer-link { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+.footer-link:hover { color: var(--text); }
 
 /* Hamburger Menu */
 .hamburger { display: none; cursor: pointer; z-index: 2000; width: 24px; position: relative; }
@@ -250,12 +333,11 @@ body {
     .search-input { width: 100% !important; }
     .calc-btn { padding: 1rem !important; font-size: 1.25rem !important; }
     .calc-display { font-size: 2.5rem !important; padding: 2rem 1.5rem !important; }
+    .result-display { font-size: clamp(2rem, 12vw, 4rem) !important; }
     
-    /* Force tool-specific button rows to stack */
-    div[style*="display: flex; gap:"] { flex-direction: column; gap: 0.5rem !important; }
-    div[style*="grid-template-columns: repeat(3, 1fr)"] { display: flex; flex-direction: column; gap: 0.5rem !important; }
+    /* Force tool-specific button rows to stack smoothly via flex-wrap in HTML, not here */
     
     /* Footer responsive */
     .footer-bottom { justify-content: center; flex-direction: column; text-align: center; gap: 1.5rem; }
-    .footer-links { width: 100%; justify-content: center; }
+    .footer-links { width: 100%; justify-content: center; flex-wrap: wrap; }
 }

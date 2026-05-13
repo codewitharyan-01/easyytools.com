@@ -31,10 +31,15 @@
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
 
         <div class="result-display" id="c" style=" margin: 4rem 0;">00:00:00</div>
-        <div class="prestige-panel" style="max-width: 500px; margin: 0 auto;">
-            <label>Set Alert Time</label>
-            <input type="time" id="t" class="search-input" style="font-size: 2rem; text-align: center; margin-bottom: 2rem;">
-            <button class="btn-prestige" style="width: 100%; justify-content: center;" onclick="set()">Enable Alarm</button>
+        <div class="prestige-panel animate-up" style="max-width: 500px; margin: 0 auto;">
+            <label style="display: block; margin-bottom: 1rem; font-weight: 800; color: var(--text-muted);">Set Alert Time</label>
+            <div style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 2rem; align-items: center;">
+                <input type="number" id="h" class="search-input" style="font-size: 2rem; text-align: center; padding: 1rem; width: 100px;" placeholder="12" min="1" max="12">
+                <div style="font-size: 2rem; font-weight: 900;">:</div>
+                <input type="number" id="m" class="search-input" style="font-size: 2rem; text-align: center; padding: 1rem; width: 100px;" placeholder="00" min="0" max="59">
+                <button id="ampmBtn" class="btn-secondary" style="font-size: 1.5rem; padding: 1rem; width: 100px; margin-left: 0.5rem;" onclick="toggleAMPM()">AM</button>
+            </div>
+            <button id="toggleBtn" class="btn-prestige" style="width: 100%; justify-content: center;" onclick="toggleAlarm()">Enable Alarm</button>
             <div id="s" style="margin-top: 2rem; font-weight: 700; color: var(--text-muted);">No alert pending.</div>
         </div>
         <audio id="snd" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" loop></audio>
@@ -42,66 +47,147 @@
     
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
     </main>
-    <footer class="site-footer">
-        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4rem; padding-bottom: 4rem;">
-            <div>
+        <footer class="site-footer">
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 3rem; padding-bottom: 4rem;">
+            <div style="grid-column: 1 / -1; margin-bottom: 2rem;">
                 <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
-                <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">A prestigious collective of high-performance online utilities designed for modern professionals.</p>
+                <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem; max-width: 400px;">A prestigious collective of high-performance online utilities designed for modern professionals.</p>
             </div>
             <div>
                 <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Financial & Math</h4>
-                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                    <a href="calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Calculator</a>
-                    <a href="gst-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">GST Calculator</a>
-                    <a href="emi-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">EMI Calculator</a>
-                    <a href="percentage-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Percentage Calc</a>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="calculator.html" class="footer-link">Calculator</a>
+                    <a href="gst-calculator.html" class="footer-link">GST Calculator</a>
+                    <a href="emi-calculator.html" class="footer-link">EMI Calculator</a>
+                    <a href="percentage-calculator.html" class="footer-link">Percentage Calc</a>
                 </div>
             </div>
             <div>
                 <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Daily Utilities</h4>
-                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                    <a href="age-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Age Calculator</a>
-                    <a href="bmi-calculator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">BMI Calculator</a>
-                    <a href="stopwatch.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Stopwatch</a>
-                    <a href="alarm.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Alarm Clock</a>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="age-calculator.html" class="footer-link">Age Calculator</a>
+                    <a href="bmi-calculator.html" class="footer-link">BMI Calculator</a>
+                    <a href="stopwatch.html" class="footer-link">Stopwatch</a>
+                    <a href="alarm.html" class="footer-link">Alarm Clock</a>
+                    <a href="pomodoro.html" class="footer-link">Pomodoro Timer</a>
                 </div>
             </div>
             <div>
-                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Text & Dev Tools</h4>
-                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                    <a href="word-counter.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Word Counter</a>
-                    <a href="password-generator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Password Gen</a>
-                    <a href="qr-generator.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">QR Generator</a>
-                    <a href="sha256-hasher.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">SHA256 Hasher</a>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Text & Media</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="word-counter.html" class="footer-link">Word Counter</a>
+                    <a href="case-converter.html" class="footer-link">Case Converter</a>
+                    <a href="remove-whitespace.html" class="footer-link">Remove Whitespace</a>
+                    <a href="markdown-preview.html" class="footer-link">Markdown Preview</a>
+                    <a href="qr-generator.html" class="footer-link">QR Generator</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Dev & Security</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="password-generator.html" class="footer-link">Password Gen</a>
+                    <a href="sha256-hasher.html" class="footer-link">SHA256 Hasher</a>
+                    <a href="base64.html" class="footer-link">Base64 Encoder</a>
+                    <a href="url-encoder.html" class="footer-link">URL Encoder</a>
+                    <a href="uuid-generator.html" class="footer-link">UUID Generator</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Web Utilities</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="json-formatter.html" class="footer-link">JSON Formatter</a>
+                    <a href="css-minifier.html" class="footer-link">CSS Minifier</a>
+                    <a href="regex-tester.html" class="footer-link">Regex Matcher</a>
+                    <a href="color-picker.html" class="footer-link">Color Picker</a>
+                    <a href="random-number.html" class="footer-link">Random Number</a>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
             <div style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 easyytools.com</div>
             <div class="footer-links">
-                <a href="privacy.html" style="color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Privacy</a>
-                <a href="contact.html" style="color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">Contact</a>
+                <a href="privacy.html" class="footer-link" style="font-weight: 700;">Privacy</a>
+                <a href="contact.html" class="footer-link" style="font-weight: 700;">Contact</a>
             </div>
         </div>
     </footer>
     <script src="app.js"></script>
     <script>
         let aT = null;
+        let isRinging = false;
+        let currentAMPM = "AM";
+
+        function toggleAMPM() {
+            currentAMPM = currentAMPM === "AM" ? "PM" : "AM";
+            document.getElementById('ampmBtn').innerText = currentAMPM;
+        }
+
         setInterval(() => {
             const n = new Date();
             document.getElementById('c').innerText = n.toLocaleTimeString();
-            if(aT && n.getHours() == aT.h && n.getMinutes() == aT.m) {
+            
+            if(aT && !isRinging && n.getHours() == aT.h && n.getMinutes() == aT.m) {
+                isRinging = true;
                 document.getElementById('snd').play();
-                document.getElementById('s').innerHTML = '<button class="btn-prestige" style="background:red; color:white; width:100%;" onclick="location.reload()">SILENCE ALARM</button>';
-                aT = null;
+                
+                const btn = document.getElementById('toggleBtn');
+                btn.style.background = "#ff4444";
+                btn.style.color = "#ffffff";
+                btn.innerText = "SILENCE ALARM";
+                
+                document.getElementById('s').innerText = "Wake up!";
             }
         }, 1000);
-        function set() {
-            const v = document.getElementById('t').value;
-            if(!v) return;
-            const [h, m] = v.split(':').map(Number);
+
+        function toggleAlarm() {
+            const btn = document.getElementById('toggleBtn');
+            const snd = document.getElementById('snd');
+            
+            if (isRinging) {
+                snd.pause();
+                snd.currentTime = 0;
+                isRinging = false;
+                aT = null;
+                btn.style.background = "";
+                btn.style.color = "";
+                btn.innerText = "Enable Alarm";
+                document.getElementById('s').innerText = "No alert pending.";
+                return;
+            }
+
+            if (aT) {
+                aT = null;
+                btn.innerText = "Enable Alarm";
+                document.getElementById('s').innerText = "No alert pending.";
+                showToast("Alarm Disabled");
+                return;
+            }
+
+            let hStr = document.getElementById('h').value;
+            let mStr = document.getElementById('m').value;
+            
+            if(!hStr) {
+                showToast("Please enter an hour.");
+                return;
+            }
+
+            let h = parseInt(hStr);
+            let m = parseInt(mStr) || 0;
+            
+            if (h < 1 || h > 12 || m < 0 || m > 59) {
+                showToast("Invalid time format.");
+                return;
+            }
+            
+            const displayStr = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')} ${currentAMPM}`;
+
+            // Convert to 24-hour time for logical comparison
+            if (currentAMPM === "PM" && h < 12) h += 12;
+            if (currentAMPM === "AM" && h === 12) h = 0;
+            
             aT = {h, m};
-            document.getElementById('s').innerText = `Alert active for ${v}`;
+            btn.innerText = "Disable Alarm";
+            document.getElementById('s').innerText = `Alert active for ${displayStr}`;
             showToast("Alarm Enabled");
         }
     </script>
