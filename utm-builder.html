@@ -3,9 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lorem Ipsum Generator | easyytools.com</title>
+    <title>UTM Campaign Link Builder | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
     <style>
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        .input-group label {
+            font-weight: 800;
+            color: var(--text);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .input-group input {
+            width: 100%;
+            font-size: 1.1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background: rgba(0,0,0,0.2);
+            color: var(--text);
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .input-group input:focus {
+            border-color: var(--accent);
+            outline: none;
+            background: rgba(0,0,0,0.4);
+        }
+        .input-hint {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+            display: block;
+        }
+        .required::after {
+            content: '*';
+            color: var(--text-muted);
+            margin-left: 4px;
+        }
+        #result {
+            word-break: break-all;
+            background: var(--hover);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-family: monospace;
+            line-height: 1.5;
+            min-height: 60px;
+        }
+    
         /* ── Global responsive tweaks ────────────────────────────────────── */
         @media (max-width: 768px) {
             .prestige-panel { padding: 1.75rem 1.25rem !important; border-radius: 20px !important; }
@@ -16,8 +64,8 @@
             .prestige-panel { padding: 1.25rem 1rem !important; }
         }
 
-        @media (max-width: 640px) {
-            .search-input { font-size: 1rem !important; }
+        @media (max-width: 768px) {
+            #result { font-size: 0.95rem; }
         }
     </style>
 </head>
@@ -47,24 +95,60 @@
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
 
         <div class="prestige-panel animate-up">
-            <h1 class="hero-title">Lorem Ipsum.</h1>
-            <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">Generate high-quality placeholder text for your mockups and designs instantly.</p>
+            <h1 class="hero-title">UTM Builder.</h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">Easily add campaign parameters to URLs so you can track Custom Campaigns in Google Analytics.</p>
 
-            <div style="display: flex; flex-wrap: wrap; gap: 1rem; background: var(--hover); padding: 1.5rem; border-radius: 16px; align-items: center; margin-bottom: 2rem;">
-                <label style="font-weight: 800; color: var(--text);">Generate:</label>
-                <input type="number" id="count" value="5" min="1" max="100" class="search-input" style="width: 100px; font-size: 1.1rem; padding: 0.5rem 1rem; border-radius: 8px;">
-                <select id="type" class="search-input" style="min-width: 150px; font-size: 1.1rem; padding: 0.5rem 1rem; border-radius: 8px;">
-                    <option value="paragraphs">Paragraphs</option>
-                    <option value="sentences">Sentences</option>
-                    <option value="words">Words</option>
-                </select>
-                <div style="display: flex; gap: 0.5rem; margin-left: auto;">
-                    <button class="btn-prestige" onclick="generateLorem()">Generate</button>
-                    <button class="btn-secondary" onclick="copyLorem()">Copy Text</button>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+                
+                <!-- Left Column: Inputs -->
+                <div style="background: var(--hover); padding: 2rem; border-radius: 20px;">
+                    <div class="input-group">
+                        <label class="required">Website URL</label>
+                        <input type="text" id="url" placeholder="https://www.example.com" oninput="build()">
+                        <span class="input-hint">The full website URL (e.g. https://www.example.com)</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="required">Campaign Source (utm_source)</label>
+                        <input type="text" id="source" placeholder="google, newsletter, facebook" oninput="build()">
+                        <span class="input-hint">The referrer (e.g. google, newsletter)</span>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="required">Campaign Medium (utm_medium)</label>
+                        <input type="text" id="medium" placeholder="cpc, banner, email" oninput="build()">
+                        <span class="input-hint">Marketing medium (e.g. cpc, banner, email)</span>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="required">Campaign Name (utm_campaign)</label>
+                        <input type="text" id="campaign" placeholder="spring_sale" oninput="build()">
+                        <span class="input-hint">Product, promo code, or slogan</span>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Campaign Term (utm_term)</label>
+                        <input type="text" id="term" placeholder="running+shoes" oninput="build()">
+                        <span class="input-hint">Identify the paid keywords</span>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Campaign Content (utm_content)</label>
+                        <input type="text" id="content" placeholder="logolink or textlink" oninput="build()">
+                        <span class="input-hint">Use to differentiate ads (e.g. A/B testing)</span>
+                    </div>
                 </div>
-            </div>
 
-            <textarea id="output" class="search-input" style="width: 100%; height: 400px; font-size: 1.1rem; padding: 2rem; border-radius: 20px; text-align: left; line-height: 1.6;" readonly></textarea>
+                <!-- Right Column: Results -->
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div style="background: var(--hover); padding: 2rem; border-radius: 20px; position: sticky; top: 2rem;">
+                        <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; color: var(--text);">Generated URL</h3>
+                        <div id="result">Waiting for inputs...</div>
+                        <button class="btn-prestige" onclick="copyResult()" style="width: 100%; margin-top: 1.5rem; padding: 1.2rem; font-size: 1.1rem;">Copy Campaign URL</button>
+                    </div>
+                </div>
+
+            </div>
         </div>
     
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
@@ -163,74 +247,53 @@
     </footer>
     <script src="app.js"></script>
     <script>
-        const words = [
-            "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
-            "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua",
-            "enim", "ad", "minim", "veniam", "quis", "nostrud", "exercitation", "ullamco", "laboris", "nisi", "ut", "aliquip", "ex", "ea", "commodo", "consequat",
-            "duis", "aute", "irure", "dolor", "in", "reprehenderit", "in", "voluptate", "velit", "esse", "cillum", "dolore", "eu", "fugiat", "nulla", "pariatur",
-            "excepteur", "sint", "occaecat", "cupidatat", "non", "proident", "sunt", "in", "culpa", "qui", "officia", "deserunt", "mollit", "anim", "id", "est", "laborum"
-        ];
+        function build() {
+            let url = document.getElementById('url').value.trim();
+            const source = document.getElementById('source').value.trim();
+            const medium = document.getElementById('medium').value.trim();
+            const campaign = document.getElementById('campaign').value.trim();
+            const term = document.getElementById('term').value.trim();
+            const content = document.getElementById('content').value.trim();
+            const res = document.getElementById('result');
 
-        function getWord() {
-            return words[Math.floor(Math.random() * words.length)];
-        }
-
-        function getSentence() {
-            const length = Math.floor(Math.random() * 10) + 5; // 5-15 words
-            let sentence = [];
-            for (let i = 0; i < length; i++) {
-                sentence.push(getWord());
+            if(!url) {
+                res.innerText = "Waiting for website URL...";
+                res.style.color = "var(--text-muted)";
+                return;
             }
-            let res = sentence.join(" ") + ".";
-            return res.charAt(0).toUpperCase() + res.slice(1);
-        }
 
-        function getParagraph() {
-            const length = Math.floor(Math.random() * 5) + 3; // 3-8 sentences
-            let para = [];
-            for (let i = 0; i < length; i++) {
-                para.push(getSentence());
+            // Ensure url has protocol
+            if(!/^https?:\/\//i.test(url)) {
+                url = 'https://' + url;
             }
-            return para.join(" ");
-        }
 
-        function generateLorem() {
-            const count = parseInt(document.getElementById('count').value) || 5;
-            const type = document.getElementById('type').value;
-            let result = [];
-
-            if (type === 'paragraphs') {
-                for (let i = 0; i < count; i++) {
-                    result.push(getParagraph());
-                }
-                document.getElementById('output').value = result.join("\\n\\n");
-            } 
-            else if (type === 'sentences') {
-                for (let i = 0; i < count; i++) {
-                    result.push(getSentence());
-                }
-                document.getElementById('output').value = result.join(" ");
-            } 
-            else if (type === 'words') {
-                for (let i = 0; i < count; i++) {
-                    result.push(getWord());
-                }
-                let res = result.join(" ");
-                document.getElementById('output').value = res.charAt(0).toUpperCase() + res.slice(1) + ".";
+            try {
+                let u = new URL(url);
+                if(source) u.searchParams.set('utm_source', source);
+                if(medium) u.searchParams.set('utm_medium', medium);
+                if(campaign) u.searchParams.set('utm_campaign', campaign);
+                if(term) u.searchParams.set('utm_term', term);
+                if(content) u.searchParams.set('utm_content', content);
+                
+                res.innerText = u.toString();
+                res.style.color = "var(--text)";
+            } catch(e) {
+                res.innerText = "Invalid URL format.";
+                res.style.color = "var(--text-muted)";
             }
         }
 
-        function copyLorem() {
-            const text = document.getElementById('output').value;
-            if(text) {
+        function copyResult() {
+            const text = document.getElementById('result').innerText;
+            if(text && !text.startsWith("Waiting") && !text.startsWith("Invalid")) {
                 copy(text);
             } else {
-                showToast("Generate text first!");
+                showToast("Please build a valid URL first.");
             }
         }
-
-        // Generate default on load
-        generateLorem();
+        
+        // responsive handled via CSS
+        }
     </script>
 </body>
 </html>

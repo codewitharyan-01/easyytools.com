@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lorem Ipsum Generator | easyytools.com</title>
+    <title>BMR Calculator | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
     <style>
         /* ── Global responsive tweaks ────────────────────────────────────── */
@@ -17,7 +17,7 @@
         }
 
         @media (max-width: 640px) {
-            .search-input { font-size: 1rem !important; }
+            #bmrResult { font-size: 2.2rem !important; }
         }
     </style>
 </head>
@@ -47,24 +47,73 @@
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
 
         <div class="prestige-panel animate-up">
-            <h1 class="hero-title">Lorem Ipsum.</h1>
-            <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">Generate high-quality placeholder text for your mockups and designs instantly.</p>
+            <h1 class="hero-title">BMR Calculator.</h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">Calculate your Basal Metabolic Rate and daily caloric needs based on activity level.</p>
 
-            <div style="display: flex; flex-wrap: wrap; gap: 1rem; background: var(--hover); padding: 1.5rem; border-radius: 16px; align-items: center; margin-bottom: 2rem;">
-                <label style="font-weight: 800; color: var(--text);">Generate:</label>
-                <input type="number" id="count" value="5" min="1" max="100" class="search-input" style="width: 100px; font-size: 1.1rem; padding: 0.5rem 1rem; border-radius: 8px;">
-                <select id="type" class="search-input" style="min-width: 150px; font-size: 1.1rem; padding: 0.5rem 1rem; border-radius: 8px;">
-                    <option value="paragraphs">Paragraphs</option>
-                    <option value="sentences">Sentences</option>
-                    <option value="words">Words</option>
-                </select>
-                <div style="display: flex; gap: 0.5rem; margin-left: auto;">
-                    <button class="btn-prestige" onclick="generateLorem()">Generate</button>
-                    <button class="btn-secondary" onclick="copyLorem()">Copy Text</button>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                
+                <div style="background: var(--hover); padding: 2rem; border-radius: 20px;">
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="font-weight: 800; color: var(--text); display: block; margin-bottom: 0.5rem;">Gender</label>
+                        <select id="gender" class="search-input" style="width: 100%; padding: 1rem; border-radius: 12px; font-size: 1.1rem;" onchange="calculate()">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="font-weight: 800; color: var(--text); display: block; margin-bottom: 0.5rem;">Age (years)</label>
+                        <input type="number" id="age" value="25" min="15" max="80" class="search-input" style="width: 100%; padding: 1rem; border-radius: 12px; font-size: 1.1rem;" oninput="calculate()">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="font-weight: 800; color: var(--text); display: block; margin-bottom: 0.5rem;">Height (cm)</label>
+                        <input type="number" id="height" value="175" min="100" max="250" class="search-input" style="width: 100%; padding: 1rem; border-radius: 12px; font-size: 1.1rem;" oninput="calculate()">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="font-weight: 800; color: var(--text); display: block; margin-bottom: 0.5rem;">Weight (kg)</label>
+                        <input type="number" id="weight" value="70" min="30" max="250" class="search-input" style="width: 100%; padding: 1rem; border-radius: 12px; font-size: 1.1rem;" oninput="calculate()">
+                    </div>
                 </div>
-            </div>
 
-            <textarea id="output" class="search-input" style="width: 100%; height: 400px; font-size: 1.1rem; padding: 2rem; border-radius: 20px; text-align: left; line-height: 1.6;" readonly></textarea>
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    
+                    <div style="background: var(--hover); padding: 2rem; border-radius: 20px; text-align: center; border: 1px solid var(--border);">
+                        <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text); margin-bottom: 0.5rem; text-transform: uppercase;">Your BMR</h3>
+                        <div id="bmrResult" style="font-size: 3rem; font-weight: 900; color: var(--text); font-variant-numeric: tabular-nums;">0</div>
+                        <div style="color: var(--text-muted); font-size: 0.9rem; font-weight: 600;">Calories / Day</div>
+                    </div>
+
+                    <div style="background: var(--hover); padding: 1.5rem; border-radius: 20px;">
+                        <h4 style="font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 1rem; text-transform: uppercase;">Daily Calorie Needs</h4>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.75rem;">
+                            <span style="color: var(--text-muted);">Sedentary (little or no exercise)</span>
+                            <strong style="color: var(--text);" id="cal1">0</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.75rem;">
+                            <span style="color: var(--text-muted);">Lightly active (exercise 1-3 days/week)</span>
+                            <strong style="color: var(--text);" id="cal2">0</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.75rem;">
+                            <span style="color: var(--text-muted);">Moderately active (exercise 3-5 days/week)</span>
+                            <strong style="color: var(--text);" id="cal3">0</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.75rem;">
+                            <span style="color: var(--text-muted);">Active (exercise 6-7 days/week)</span>
+                            <strong style="color: var(--text);" id="cal4">0</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: var(--text-muted);">Very active (hard exercise & physical job)</span>
+                            <strong style="color: var(--text);" id="cal5">0</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
         </div>
     
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
@@ -163,74 +212,36 @@
     </footer>
     <script src="app.js"></script>
     <script>
-        const words = [
-            "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
-            "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua",
-            "enim", "ad", "minim", "veniam", "quis", "nostrud", "exercitation", "ullamco", "laboris", "nisi", "ut", "aliquip", "ex", "ea", "commodo", "consequat",
-            "duis", "aute", "irure", "dolor", "in", "reprehenderit", "in", "voluptate", "velit", "esse", "cillum", "dolore", "eu", "fugiat", "nulla", "pariatur",
-            "excepteur", "sint", "occaecat", "cupidatat", "non", "proident", "sunt", "in", "culpa", "qui", "officia", "deserunt", "mollit", "anim", "id", "est", "laborum"
-        ];
+        function calculate() {
+            const gender = document.getElementById('gender').value;
+            const age = parseFloat(document.getElementById('age').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
 
-        function getWord() {
-            return words[Math.floor(Math.random() * words.length)];
-        }
+            if(!age || !height || !weight) return;
 
-        function getSentence() {
-            const length = Math.floor(Math.random() * 10) + 5; // 5-15 words
-            let sentence = [];
-            for (let i = 0; i < length; i++) {
-                sentence.push(getWord());
-            }
-            let res = sentence.join(" ") + ".";
-            return res.charAt(0).toUpperCase() + res.slice(1);
-        }
-
-        function getParagraph() {
-            const length = Math.floor(Math.random() * 5) + 3; // 3-8 sentences
-            let para = [];
-            for (let i = 0; i < length; i++) {
-                para.push(getSentence());
-            }
-            return para.join(" ");
-        }
-
-        function generateLorem() {
-            const count = parseInt(document.getElementById('count').value) || 5;
-            const type = document.getElementById('type').value;
-            let result = [];
-
-            if (type === 'paragraphs') {
-                for (let i = 0; i < count; i++) {
-                    result.push(getParagraph());
-                }
-                document.getElementById('output').value = result.join("\\n\\n");
-            } 
-            else if (type === 'sentences') {
-                for (let i = 0; i < count; i++) {
-                    result.push(getSentence());
-                }
-                document.getElementById('output').value = result.join(" ");
-            } 
-            else if (type === 'words') {
-                for (let i = 0; i < count; i++) {
-                    result.push(getWord());
-                }
-                let res = result.join(" ");
-                document.getElementById('output').value = res.charAt(0).toUpperCase() + res.slice(1) + ".";
-            }
-        }
-
-        function copyLorem() {
-            const text = document.getElementById('output').value;
-            if(text) {
-                copy(text);
+            // Mifflin-St Jeor Equation
+            let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+            if (gender === 'male') {
+                bmr += 5;
             } else {
-                showToast("Generate text first!");
+                bmr -= 161;
             }
+
+            bmr = Math.round(bmr);
+
+            document.getElementById('bmrResult').innerText = bmr;
+
+            // Activity Multipliers
+            document.getElementById('cal1').innerText = Math.round(bmr * 1.2);
+            document.getElementById('cal2').innerText = Math.round(bmr * 1.375);
+            document.getElementById('cal3').innerText = Math.round(bmr * 1.55);
+            document.getElementById('cal4').innerText = Math.round(bmr * 1.725);
+            document.getElementById('cal5').innerText = Math.round(bmr * 1.9);
         }
 
-        // Generate default on load
-        generateLorem();
+        // Initialize
+        calculate();
     </script>
 </body>
 </html>

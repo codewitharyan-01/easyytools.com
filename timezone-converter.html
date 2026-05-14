@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timezone Converter | easyytools.com</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            width: 100%;
+            align-items: center;
+        }
+        .compare-card {
+            background: rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .compare-card-1 {
+            text-align: right;
+        }
+        .compare-card-2 {
+            text-align: left;
+        }
+        .compare-connector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .connector-line {
+            width: 2px;
+            height: 30px;
+            background: var(--hover);
+        }
+        .compare-time {
+            font-size: 2.5rem;
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+        }
+        .compare-badge {
+            color: #1e272e;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 900;
+            font-size: 1rem;
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        @media (max-width: 650px) {
+            .compare-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .compare-card-1, .compare-card-2 {
+                text-align: center;
+            }
+            .compare-connector {
+                flex-direction: row;
+            }
+            .connector-line {
+                width: 30px;
+                height: 2px;
+            }
+            .compare-time {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="toast">Copied to clipboard</div>
+        <header class="site-header">
+        <a href="index.html" class="logo">easyytools.com</a>
+        <nav class="desktop-nav">
+            <a href="index.html">Home</a>
+            <a href="index.html#tool-grid">Tools</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+    </header>
+    <div class="mobile-overlay" id="mobile-overlay">
+        <a href="index.html" onclick="toggleMenu()">Home</a>
+        <a href="index.html#tool-grid" onclick="toggleMenu()">Tools</a>
+        <a href="privacy.html" onclick="toggleMenu()">Privacy</a>
+        <a href="contact.html" onclick="toggleMenu()">Contact</a>
+    </div>
+
+    <main class="tool-view-prestige" style="max-width: 1000px;">
+        <a href="index.html" class="btn-back">← Back</a>
+        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
+        
+        <div class="prestige-panel animate-up">
+            <h1 class="hero-title">Timezones.</h1>
+            
+            <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem;">
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; background: var(--hover); padding: 1.5rem; border-radius: 16px;">
+                    <label style="font-weight: 700; font-size: 1.1rem; color: var(--text);">Add Timezone:</label>
+                    <input type="text" id="tz-select" list="tz-options" class="search-input" style="flex-grow: 1; min-width: 200px; font-size: 1.1rem; border-radius: 8px; padding: 0.5rem 1rem;" placeholder="Search timezone (e.g. Asia/Tokyo)...">
+                    <datalist id="tz-options"></datalist>
+                    <button class="btn-prestige" onclick="addTimezone()">Add Zone</button>
+                    <button class="btn-secondary" onclick="resetTimezones()">Reset Defaults</button>
+                </div>
+
+                <div id="tz-list" style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
+                    <!-- JS will populate -->
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; background: var(--hover); padding: 1.5rem; border-radius: 16px;">
+                    <h3 style="font-size: 1.5rem; font-weight: 800; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">Compare Timezones</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+                        <input type="text" id="tz-compare-1" list="tz-options" class="search-input" style="flex-grow: 1; min-width: 200px; font-size: 1.1rem; border-radius: 8px; padding: 0.5rem 1rem;" placeholder="Search first timezone...">
+                        <span style="font-weight: 800; color: var(--text-muted);">and</span>
+                        <input type="text" id="tz-compare-2" list="tz-options" class="search-input" style="flex-grow: 1; min-width: 200px; font-size: 1.1rem; border-radius: 8px; padding: 0.5rem 1rem;" placeholder="Search second timezone...">
+                        <button class="btn-prestige" onclick="compareTimezones()" style="margin-left: auto;">Compare</button>
+                    </div>
+                    <div id="compare-result" style="display: none; padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: 12px; margin-top: 1rem; font-size: 1.2rem; font-weight: 700; text-align: center;">
+                        <!-- result here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
+    </main>
+
+    <footer class="site-footer">
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 3rem; padding-bottom: 4rem;">
+            <div style="grid-column: 1 / -1; margin-bottom: 2rem;">
+                <a href="index.html" class="logo" style="font-size: 1.5rem;">easyytools.com</a>
+                <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem; max-width: 400px;">A prestigious collective of high-performance online utilities designed for modern professionals.</p>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Financial & Math</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="calculator.html" class="footer-link">Basic Calculator</a>
+                    <a href="scientific-calculator.html" class="footer-link">Scientific Calc</a>
+                    <a href="gst-calculator.html" class="footer-link">GST Calculator</a>
+                    <a href="emi-calculator.html" class="footer-link">EMI Calculator</a>
+                    <a href="percentage-calculator.html" class="footer-link">Percentage Calc</a>
+                    <a href="sip-calculator.html" class="footer-link">SIP Calculator</a>
+                    <a href="compound-interest.html" class="footer-link">Compound Interest</a>
+                    <a href="currency-converter.html" class="footer-link">Currency Converter</a>
+                    <a href="roi-calculator.html" class="footer-link">ROI Calculator</a>
+                    <a href="amortization-calculator.html" class="footer-link">Amortization Calc</a>
+                    <a href="discount-calculator.html" class="footer-link">Discount Calculator</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Daily Utilities</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="age-calculator.html" class="footer-link">Age Calculator</a>
+                    <a href="bmi-calculator.html" class="footer-link">BMI Calculator</a>
+                    <a href="stopwatch.html" class="footer-link">Stopwatch</a>
+                    <a href="alarm.html" class="footer-link">Alarm Clock</a>
+                    <a href="pomodoro.html" class="footer-link">Pomodoro Timer</a>
+                    <a href="timezone-converter.html" class="footer-link">Timezone Converter</a>
+                    <a href="bmr-calculator.html" class="footer-link">BMR Calculator</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Text & Media</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="word-counter.html" class="footer-link">Word Counter</a>
+                    <a href="grammar-checker.html" class="footer-link">Grammar Checker</a>
+                    <a href="image-compressor.html" class="footer-link">Image Compressor</a>
+                    <a href="image-converter.html" class="footer-link">Image Converter</a>
+                    <a href="pdf-compressor.html" class="footer-link">PDF Compressor</a>
+                    <a href="ai-humanizer.html" class="footer-link">AI Humanizer</a>
+                    <a href="case-converter.html" class="footer-link">Case Converter</a>
+                    <a href="remove-whitespace.html" class="footer-link">Remove Whitespace</a>
+                    <a href="markdown-preview.html" class="footer-link">Markdown Preview</a>
+                    <a href="qr-generator.html" class="footer-link">QR Generator</a>
+                    <a href="youtube-title-generator.html" class="footer-link">YouTube Title Gen</a>
+                    <a href="hashtag-generator.html" class="footer-link">Hashtag Generator</a>
+                    <a href="lorem-ipsum.html" class="footer-link">Lorem Ipsum Gen</a>
+                    <a href="meme-generator.html" class="footer-link">Meme Generator</a>
+                    <a href="text-to-pdf.html" class="footer-link">Text to PDF</a>
+                    <a href="text-to-speech.html" class="footer-link">Text to Speech</a>
+                    <a href="voice-typing.html" class="footer-link">Voice Typing Pad</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Dev & Security</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="password-generator.html" class="footer-link">Password Gen</a>
+                    <a href="sha256-hasher.html" class="footer-link">SHA256 Hasher</a>
+                    <a href="base64.html" class="footer-link">Base64 Encoder</a>
+                    <a href="url-encoder.html" class="footer-link">URL Encoder</a>
+                    <a href="uuid-generator.html" class="footer-link">UUID Generator</a>
+                    <a href="password-strength.html" class="footer-link">Password Strength</a>
+                    <a href="jwt-decoder.html" class="footer-link">JWT Decoder</a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text);">Web Utilities</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; flex-direction: column;">
+                    <a href="json-formatter.html" class="footer-link">JSON Formatter</a>
+                    <a href="css-minifier.html" class="footer-link">CSS Minifier</a>
+                    <a href="regex-tester.html" class="footer-link">Regex Matcher</a>
+                    <a href="color-picker.html" class="footer-link">Color Picker</a>
+                    <a href="random-number.html" class="footer-link">Random Number</a>
+                    <a href="utm-builder.html" class="footer-link">UTM Builder</a>
+                    <a href="html-beautifier.html" class="footer-link">HTML Beautifier</a>
+                    <a href="color-converter.html" class="footer-link">Color Converter</a>
+                    <a href="fake-data-generator.html" class="footer-link">Fake Data Gen</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 easyytools.com</div>
+            <div class="footer-links">
+                <a href="privacy.html" class="footer-link" style="font-weight: 700;">Privacy</a>
+                <a href="contact.html" class="footer-link" style="font-weight: 700;">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        // Retrieve all standard IANA timezones supported by the browser (usually 400+)
+        const allTimezones = typeof Intl !== 'undefined' && Intl.supportedValuesOf ? Intl.supportedValuesOf('timeZone') : ['UTC', 'America/New_York', 'Europe/London', 'Asia/Tokyo', 'Asia/Kolkata'];
+
+        const defaultZones = ['UTC', 'America/New_York', 'Europe/London', 'Asia/Tokyo', 'Asia/Kolkata'];
+        let activeZones = [...defaultZones];
+
+        function populateSelects() {
+            const datalist = document.getElementById('tz-options');
+            if (datalist) {
+                allTimezones.forEach(tz => {
+                    const label = tz.replace('_', ' ');
+                    const option = document.createElement('option');
+                    option.value = tz;
+                    option.textContent = label;
+                    datalist.appendChild(option);
+                });
+            }
+        }
+
+        function renderZones() {
+            const container = document.getElementById('tz-list');
+            if(!container) return;
+            container.innerHTML = '';
+            
+            const now = new Date();
+            
+            activeZones.forEach((tz, index) => {
+                let timeString = '';
+                let dateString = '';
+                try {
+                    timeString = new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).format(now);
+                    dateString = new Intl.DateTimeFormat('en-US', { timeZone: tz, weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }).format(now);
+                } catch(e) {
+                    timeString = "Invalid Timezone";
+                }
+
+                container.innerHTML += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: var(--hover); padding: 1.5rem; border-radius: 12px; flex-wrap: wrap; gap: 1rem;">
+                        <div style="display: flex; flex-direction: column;">
+                            <div style="font-size: 1.2rem; font-weight: 800; color: var(--text);">${tz.split('/').pop().replace('_', ' ')}</div>
+                            <div style="font-size: 0.9rem; color: var(--text-muted);">${tz} &bull; ${dateString}</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1.5rem;">
+                            <div style="font-size: 2rem; font-weight: 900; font-variant-numeric: tabular-nums; color: #2ed573;">${timeString}</div>
+                            <button onclick="removeZone(${index})" style="background: none; border: none; color: #ff4757; font-size: 1.5rem; cursor: pointer; font-weight: bold; line-height: 1;" title="Remove Timezone">&times;</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addTimezone() {
+            const tz = document.getElementById('tz-select').value;
+            if (!allTimezones.includes(tz)) {
+                showToast("Invalid timezone. Please search and select from the list.");
+                return;
+            }
+            if (!activeZones.includes(tz)) {
+                activeZones.push(tz);
+                renderZones();
+                document.getElementById('tz-select').value = ''; // clear input
+            } else {
+                showToast("Timezone already added!");
+            }
+        }
+
+        function removeZone(index) {
+            activeZones.splice(index, 1);
+            renderZones();
+        }
+
+        function resetTimezones() {
+            activeZones = [...defaultZones];
+            renderZones();
+        }
+
+        function getOffset(tz) {
+            // Get local time in the target timezone
+            const date = new Date();
+            const utcDate = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
+            const tzDate = new Date(date.toLocaleString('en-US', { timeZone: tz }));
+            return (tzDate.getTime() - utcDate.getTime()) / (1000 * 60 * 60);
+        }
+
+        function compareTimezones() {
+            const tz1 = document.getElementById('tz-compare-1').value;
+            const tz2 = document.getElementById('tz-compare-2').value;
+            const resDiv = document.getElementById('compare-result');
+
+            if (!allTimezones.includes(tz1) || !allTimezones.includes(tz2)) {
+                resDiv.style.display = 'block';
+                resDiv.style.color = '#ff4757';
+                resDiv.innerHTML = 'Please select valid timezones from the list.';
+                return;
+            }
+
+            if (tz1 === tz2) {
+                resDiv.style.display = 'block';
+                resDiv.style.color = '#ff4757';
+                resDiv.innerHTML = 'Please select two different timezones.';
+                return;
+            }
+
+            const offset1 = getOffset(tz1);
+            const offset2 = getOffset(tz2);
+            
+            const diff = offset1 - offset2;
+            const absDiff = Math.abs(diff);
+
+            const n1 = tz1.split('/').pop().replace('_', ' ');
+            const n2 = tz2.split('/').pop().replace('_', ' ');
+
+            resDiv.style.display = 'block';
+            resDiv.style.color = 'var(--text)';
+            
+            // Format output nicely
+            let hrs = Math.floor(absDiff);
+            let mins = Math.round((absDiff - hrs) * 60);
+            let diffStr = '';
+            if (hrs > 0) diffStr += `${hrs} hr${hrs > 1 ? 's' : ''}`;
+            if (mins > 0) {
+                if(diffStr.length > 0) diffStr += ' ';
+                diffStr += `${mins} min${mins > 1 ? 's' : ''}`;
+            }
+
+            const now = new Date();
+            let t1 = new Intl.DateTimeFormat('en-US', { timeZone: tz1, hour: '2-digit', minute: '2-digit', hour12: true }).format(now);
+            let d1 = new Intl.DateTimeFormat('en-US', { timeZone: tz1, weekday: 'short', month: 'short', day: 'numeric' }).format(now);
+            let t2 = new Intl.DateTimeFormat('en-US', { timeZone: tz2, hour: '2-digit', minute: '2-digit', hour12: true }).format(now);
+            let d2 = new Intl.DateTimeFormat('en-US', { timeZone: tz2, weekday: 'short', month: 'short', day: 'numeric' }).format(now);
+
+            let relationText = diff === 0 ? "Exact same time" : (diff > 0 ? `${diffStr} Ahead` : `${diffStr} Behind`);
+            let badgeColor = diff === 0 ? "var(--text-muted)" : (diff > 0 ? "#2ed573" : "#ff4757");
+
+            resDiv.innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem; width: 100%;">
+                    <div style="font-size: 1.1rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Time Difference</div>
+                    <div class="compare-grid">
+                        
+                        <div class="compare-card compare-card-1">
+                            <div style="font-size: 1.1rem; font-weight: 800; color: var(--text);">${n1}</div>
+                            <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">${d1}</div>
+                            <div class="compare-time" style="color: #70a1ff;">${t1}</div>
+                        </div>
+
+                        <div class="compare-connector">
+                            <div class="connector-line"></div>
+                            <div class="compare-badge" style="background: ${badgeColor};">
+                                ${relationText}
+                            </div>
+                            <div class="connector-line"></div>
+                        </div>
+
+                        <div class="compare-card compare-card-2">
+                            <div style="font-size: 1.1rem; font-weight: 800; color: var(--text);">${n2}</div>
+                            <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">${d2}</div>
+                            <div class="compare-time" style="color: #ff7f50;">${t2}</div>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+        }
+
+        populateSelects();
+        setInterval(renderZones, 1000);
+        renderZones();
+    </script>
+</body>
+</html>

@@ -189,10 +189,14 @@ body {
     backdrop-filter: blur(12px);
     position: relative;
     animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    /* Prevent any child from overflowing horizontally */
+    overflow: hidden;
 }
 
 .search-input {
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     background: var(--glass);
     border: 1px solid var(--border);
     padding: 1.25rem 1.5rem;
@@ -325,19 +329,27 @@ body {
 }
 
 @media (max-width: 768px) {
-    .prestige-panel { padding: 2.5rem 1.5rem; }
+    .prestige-panel { padding: 2rem 1.5rem; border-radius: 20px; }
     .tool-view-prestige { padding: 2rem 1rem; }
-    .btn-prestige, .btn-secondary { width: 100%; justify-content: center; margin-bottom: 1rem; display: flex; }
-    .btn-back { margin-bottom: 2rem; }
+    .btn-prestige, .btn-secondary { width: 100%; justify-content: center; margin-bottom: 0.75rem; display: flex; }
+    .btn-back { margin-bottom: 1.5rem; }
     .responsive-grid { grid-template-columns: 1fr; }
-    .search-input { width: 100% !important; }
+    .search-input { width: 100% !important; font-size: 1rem !important; }
     .calc-btn { padding: 1rem !important; font-size: 1.25rem !important; }
     .calc-display { font-size: 2.5rem !important; padding: 2rem 1.5rem !important; }
     .result-display { font-size: clamp(2rem, 12vw, 4rem) !important; }
-    
-    /* Force tool-specific button rows to stack smoothly via flex-wrap in HTML, not here */
+    .ad-zone { margin: 1.5rem 0 !important; min-height: 70px; }
     
     /* Footer responsive */
     .footer-bottom { justify-content: center; flex-direction: column; text-align: center; gap: 1.5rem; }
     .footer-links { width: 100%; justify-content: center; flex-wrap: wrap; }
+}
+
+@media (max-width: 480px) {
+    .prestige-panel { padding: 1.25rem 1rem; border-radius: 16px; }
+    .tool-view-prestige { padding: 1.25rem 0.75rem; }
+    .hero-title { font-size: clamp(2rem, 10vw, 3.5rem) !important; margin-bottom: 1.25rem !important; }
+    .btn-prestige, .btn-secondary { padding: 1rem 1.5rem; font-size: 0.8rem; }
+    .search-input { padding: 0.9rem 1rem !important; font-size: 0.95rem !important; }
+    select.search-input { padding: 0.9rem 1rem !important; }
 }

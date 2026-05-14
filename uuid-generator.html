@@ -35,6 +35,37 @@
         <div class="prestige-panel animate-up">
             <h1 class="hero-title">UUID Forge.</h1>
             
+            <div style="display: grid; grid-template-columns: 1fr; gap: 3rem; margin-top: 2rem;">
+                <!-- Generator Section -->
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <h3 style="font-size: 1.5rem; font-weight: 800; border-bottom: 2px solid var(--hover); padding-bottom: 0.5rem;">UUID Generator</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; background: var(--hover); padding: 1.5rem; border-radius: 16px;">
+                        <label style="font-weight: 700; font-size: 1.1rem; color: var(--text);">Version:</label>
+                        <select id="uuid-version" class="search-input" style="width: auto; padding: 0.5rem 1rem; border-radius: 8px;">
+                            <option value="4">v4 (Random)</option>
+                            <option value="1">v1 (Time-based)</option>
+                        </select>
+                        <label style="font-weight: 700; font-size: 1.1rem; color: var(--text); margin-left: 1rem;">Count:</label>
+                        <input type="number" id="uuid-count" class="search-input" value="1" min="1" max="500" style="width: 100px; font-size: 1.1rem; border-radius: 8px; padding: 0.5rem 1rem;">
+                        <button class="btn-prestige" onclick="generateUUIDs()" style="margin-left: auto;">Generate</button>
+                        <button class="btn-secondary" onclick="copyUUIDs()">Copy All</button>
+                        <button class="btn-secondary" onclick="clearUUIDs()">Clear</button>
+                    </div>
+
+                    <textarea id="uuid-output" class="search-input" style="height: 250px; text-align: left; font-size: 1.1rem; border-radius: 16px; padding: 1.5rem; font-family: monospace; resize: vertical;" readonly placeholder="Your UUIDs will appear here..."></textarea>
+                </div>
+
+                <!-- Validator & Decoder Section -->
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <h3 style="font-size: 1.5rem; font-weight: 800; border-bottom: 2px solid var(--hover); padding-bottom: 0.5rem;">UUID Decoder & Validator</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <input type="text" id="uuid-decode-input" class="search-input" style="font-size: 1.1rem; padding: 1.5rem; border-radius: 16px; font-family: monospace;" placeholder="Paste any UUID here to see its structure..." oninput="decodeUUID()">
+                    </div>
+                    <div id="uuid-decode-output" style="display: none; background: var(--hover); border-radius: 16px; padding: 1.5rem;">
+                        <!-- dynamic content -->
+                    </div>
+                </div>
+            </div>
         </div>
     
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
@@ -59,6 +90,7 @@
                     <a href="currency-converter.html" class="footer-link">Currency Converter</a>
                     <a href="roi-calculator.html" class="footer-link">ROI Calculator</a>
                     <a href="amortization-calculator.html" class="footer-link">Amortization Calc</a>
+                    <a href="discount-calculator.html" class="footer-link">Discount Calculator</a>
                 </div>
             </div>
             <div>
@@ -69,6 +101,8 @@
                     <a href="stopwatch.html" class="footer-link">Stopwatch</a>
                     <a href="alarm.html" class="footer-link">Alarm Clock</a>
                     <a href="pomodoro.html" class="footer-link">Pomodoro Timer</a>
+                    <a href="timezone-converter.html" class="footer-link">Timezone Converter</a>
+                    <a href="bmr-calculator.html" class="footer-link">BMR Calculator</a>
                 </div>
             </div>
             <div>
@@ -84,6 +118,13 @@
                     <a href="remove-whitespace.html" class="footer-link">Remove Whitespace</a>
                     <a href="markdown-preview.html" class="footer-link">Markdown Preview</a>
                     <a href="qr-generator.html" class="footer-link">QR Generator</a>
+                    <a href="youtube-title-generator.html" class="footer-link">YouTube Title Gen</a>
+                    <a href="hashtag-generator.html" class="footer-link">Hashtag Generator</a>
+                    <a href="lorem-ipsum.html" class="footer-link">Lorem Ipsum Gen</a>
+                    <a href="meme-generator.html" class="footer-link">Meme Generator</a>
+                    <a href="text-to-pdf.html" class="footer-link">Text to PDF</a>
+                    <a href="text-to-speech.html" class="footer-link">Text to Speech</a>
+                    <a href="voice-typing.html" class="footer-link">Voice Typing Pad</a>
                 </div>
             </div>
             <div>
@@ -94,6 +135,8 @@
                     <a href="base64.html" class="footer-link">Base64 Encoder</a>
                     <a href="url-encoder.html" class="footer-link">URL Encoder</a>
                     <a href="uuid-generator.html" class="footer-link">UUID Generator</a>
+                    <a href="password-strength.html" class="footer-link">Password Strength</a>
+                    <a href="jwt-decoder.html" class="footer-link">JWT Decoder</a>
                 </div>
             </div>
             <div>
@@ -104,6 +147,10 @@
                     <a href="regex-tester.html" class="footer-link">Regex Matcher</a>
                     <a href="color-picker.html" class="footer-link">Color Picker</a>
                     <a href="random-number.html" class="footer-link">Random Number</a>
+                    <a href="utm-builder.html" class="footer-link">UTM Builder</a>
+                    <a href="html-beautifier.html" class="footer-link">HTML Beautifier</a>
+                    <a href="color-converter.html" class="footer-link">Color Converter</a>
+                    <a href="fake-data-generator.html" class="footer-link">Fake Data Gen</a>
                 </div>
             </div>
         </div>
@@ -117,7 +164,123 @@
     </footer>
     <script src="app.js"></script>
     <script>
+        // Generator logic
+        function generateUUIDv4() {
+            if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        // Mock v1 for demonstration (time-based pseudo structure)
+        function generateUUIDv1() {
+            var d = new Date().getTime();
+            if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
+                d += performance.now(); //use high-precision timer if available
+            }
+            return 'xxxxxxxx-xxxx-1xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+        }
+
+        function generateUUIDs() {
+            const version = document.getElementById('uuid-version').value;
+            const countInput = document.getElementById('uuid-count').value;
+            let count = parseInt(countInput, 10);
+            if (isNaN(count) || count < 1) count = 1;
+            if (count > 500) count = 500;
+
+            let uuids = [];
+            for (let i = 0; i < count; i++) {
+                if (version === '1') uuids.push(generateUUIDv1());
+                else uuids.push(generateUUIDv4());
+            }
+
+            document.getElementById('uuid-output').value = uuids.join('\n');
+        }
+
+        function copyUUIDs() {
+            const out = document.getElementById('uuid-output').value;
+            if (out) copy(out);
+            else showToast("Nothing to copy!");
+        }
         
+        function clearUUIDs() {
+            document.getElementById('uuid-output').value = '';
+        }
+
+        // Decoder logic
+        function decodeUUID() {
+            const input = document.getElementById('uuid-decode-input').value.trim();
+            const outputBox = document.getElementById('uuid-decode-output');
+            
+            if (!input) {
+                outputBox.style.display = 'none';
+                return;
+            }
+
+            // Standard UUID regex (allowing without dashes too)
+            const cleaned = input.replace(/-/g, '').toLowerCase();
+            const isValid = /^[0-9a-f]{32}$/i.test(cleaned);
+
+            outputBox.style.display = 'block';
+
+            if (!isValid) {
+                outputBox.innerHTML = '<div style="color: #ff4757; font-weight: 700; font-size: 1.1rem;">Invalid UUID format!</div>';
+                return;
+            }
+
+            // Extract parts
+            const versionChar = cleaned.charAt(12);
+            let versionInfo = 'Unknown';
+            if (versionChar === '1') versionInfo = '1 (Time-based)';
+            else if (versionChar === '3') versionInfo = '3 (MD5 hash)';
+            else if (versionChar === '4') versionInfo = '4 (Random)';
+            else if (versionChar === '5') versionInfo = '5 (SHA-1 hash)';
+
+            const variantChar = cleaned.charAt(16);
+            let variantNum = parseInt(variantChar, 16);
+            let variantInfo = 'Unknown';
+            if (variantNum >= 8 && variantNum <= 11) variantInfo = 'RFC 4122';
+            else if (variantNum >= 12 && variantNum <= 13) variantInfo = 'Microsoft';
+            else if (variantNum >= 14) variantInfo = 'Future reserved';
+            else variantInfo = 'NCS backward compatible';
+
+            const formatted = `${cleaned.substring(0,8)}-${cleaned.substring(8,12)}-${cleaned.substring(12,16)}-${cleaned.substring(16,20)}-${cleaned.substring(20)}`;
+            const randomData = formatted.replace(`-${versionChar}`, '-').replace(`-${variantChar}`, '-');
+
+            outputBox.innerHTML = `
+                <div style="color: #2ed573; font-weight: 800; font-size: 1.2rem; margin-bottom: 1rem;">Valid UUID ✓</div>
+                <div style="font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem;">UUID ${versionInfo} Breakdown</div>
+                
+                <div style="display: grid; gap: 1rem; margin-top: 1.5rem;">
+                    <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">
+                        <div style="font-weight: 800; color: var(--text-muted); text-transform: uppercase; font-size: 0.8rem; margin-bottom: 0.25rem;">Version</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #70a1ff;">${versionChar}</div>
+                        <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Indicates the UUID version (${versionInfo}).</div>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">
+                        <div style="font-weight: 800; color: var(--text-muted); text-transform: uppercase; font-size: 0.8rem; margin-bottom: 0.25rem;">Variant</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #ff7f50;">${variantChar}</div>
+                        <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Defines the layout of the UUID (Variant: ${variantInfo}).</div>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">
+                        <div style="font-weight: 800; color: var(--text-muted); text-transform: uppercase; font-size: 0.8rem; margin-bottom: 0.25rem;">Data / Entropy</div>
+                        <div style="font-size: 1.2rem; font-family: monospace; font-weight: 700; color: #2ed573; word-break: break-all;">${randomData}</div>
+                        <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">The remaining 122 bits of data.</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            generateUUIDs();
+        });
     </script>
 </body>
 </html>

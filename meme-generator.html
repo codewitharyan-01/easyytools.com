@@ -3,9 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lorem Ipsum Generator | easyytools.com</title>
+    <title>Meme Generator | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
     <style>
+        .canvas-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            background: rgba(0,0,0,0.2);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-top: 2rem;
+            min-height: 300px;
+            align-items: center;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+    
         /* ── Global responsive tweaks ────────────────────────────────────── */
         @media (max-width: 768px) {
             .prestige-panel { padding: 1.75rem 1.25rem !important; border-radius: 20px !important; }
@@ -17,7 +35,7 @@
         }
 
         @media (max-width: 640px) {
-            .search-input { font-size: 1rem !important; }
+            .canvas-container { min-height: 200px; padding: 0.5rem; }
         }
     </style>
 </head>
@@ -47,24 +65,33 @@
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
 
         <div class="prestige-panel animate-up">
-            <h1 class="hero-title">Lorem Ipsum.</h1>
-            <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">Generate high-quality placeholder text for your mockups and designs instantly.</p>
+            <h1 class="hero-title">Meme Generator.</h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">Upload an image, add classic impact text, and download your meme instantly.</p>
 
-            <div style="display: flex; flex-wrap: wrap; gap: 1rem; background: var(--hover); padding: 1.5rem; border-radius: 16px; align-items: center; margin-bottom: 2rem;">
-                <label style="font-weight: 800; color: var(--text);">Generate:</label>
-                <input type="number" id="count" value="5" min="1" max="100" class="search-input" style="width: 100px; font-size: 1.1rem; padding: 0.5rem 1rem; border-radius: 8px;">
-                <select id="type" class="search-input" style="min-width: 150px; font-size: 1.1rem; padding: 0.5rem 1rem; border-radius: 8px;">
-                    <option value="paragraphs">Paragraphs</option>
-                    <option value="sentences">Sentences</option>
-                    <option value="words">Words</option>
-                </select>
-                <div style="display: flex; gap: 0.5rem; margin-left: auto;">
-                    <button class="btn-prestige" onclick="generateLorem()">Generate</button>
-                    <button class="btn-secondary" onclick="copyLorem()">Copy Text</button>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                
+                <div style="background: var(--hover); padding: 2rem; border-radius: 20px;">
+                    <label style="font-weight: 800; color: var(--text); display: block; margin-bottom: 0.5rem;">1. Upload Image</label>
+                    <input type="file" id="imageInput" accept="image/*" class="search-input" style="width: 100%; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem;" onchange="loadImage(event)">
+
+                    <label style="font-weight: 800; color: var(--text); display: block; margin-bottom: 0.5rem;">2. Top Text</label>
+                    <input type="text" id="topText" class="search-input" style="width: 100%; font-size: 1.1rem; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem;" placeholder="e.g. WHEN YOU REALIZE..." oninput="drawMeme()">
+
+                    <label style="font-weight: 800; color: var(--text); display: block; margin-bottom: 0.5rem;">3. Bottom Text</label>
+                    <input type="text" id="bottomText" class="search-input" style="width: 100%; font-size: 1.1rem; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem;" placeholder="e.g. IT'S FRIDAY" oninput="drawMeme()">
+
+                    <button class="btn-prestige" onclick="downloadMeme()" style="width: 100%; padding: 1.2rem; font-size: 1.1rem;">Download Meme</button>
                 </div>
-            </div>
 
-            <textarea id="output" class="search-input" style="width: 100%; height: 400px; font-size: 1.1rem; padding: 2rem; border-radius: 20px; text-align: left; line-height: 1.6;" readonly></textarea>
+                <div>
+                    <h3 style="font-size: 1.5rem; font-weight: 800; color: var(--text);">Preview</h3>
+                    <div class="canvas-container">
+                        <canvas id="memeCanvas"></canvas>
+                        <div id="placeholderText" style="color: var(--text-muted); font-weight: 800;">Upload an image to start</div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
@@ -163,74 +190,104 @@
     </footer>
     <script src="app.js"></script>
     <script>
-        const words = [
-            "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
-            "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua",
-            "enim", "ad", "minim", "veniam", "quis", "nostrud", "exercitation", "ullamco", "laboris", "nisi", "ut", "aliquip", "ex", "ea", "commodo", "consequat",
-            "duis", "aute", "irure", "dolor", "in", "reprehenderit", "in", "voluptate", "velit", "esse", "cillum", "dolore", "eu", "fugiat", "nulla", "pariatur",
-            "excepteur", "sint", "occaecat", "cupidatat", "non", "proident", "sunt", "in", "culpa", "qui", "officia", "deserunt", "mollit", "anim", "id", "est", "laborum"
-        ];
+        const canvas = document.getElementById('memeCanvas');
+        const ctx = canvas.getContext('2d');
+        let currentImage = null;
 
-        function getWord() {
-            return words[Math.floor(Math.random() * words.length)];
-        }
+        function loadImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-        function getSentence() {
-            const length = Math.floor(Math.random() * 10) + 5; // 5-15 words
-            let sentence = [];
-            for (let i = 0; i < length; i++) {
-                sentence.push(getWord());
-            }
-            let res = sentence.join(" ") + ".";
-            return res.charAt(0).toUpperCase() + res.slice(1);
-        }
-
-        function getParagraph() {
-            const length = Math.floor(Math.random() * 5) + 3; // 3-8 sentences
-            let para = [];
-            for (let i = 0; i < length; i++) {
-                para.push(getSentence());
-            }
-            return para.join(" ");
-        }
-
-        function generateLorem() {
-            const count = parseInt(document.getElementById('count').value) || 5;
-            const type = document.getElementById('type').value;
-            let result = [];
-
-            if (type === 'paragraphs') {
-                for (let i = 0; i < count; i++) {
-                    result.push(getParagraph());
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    currentImage = img;
+                    document.getElementById('placeholderText').style.display = 'none';
+                    drawMeme();
                 }
-                document.getElementById('output').value = result.join("\\n\\n");
-            } 
-            else if (type === 'sentences') {
-                for (let i = 0; i < count; i++) {
-                    result.push(getSentence());
-                }
-                document.getElementById('output').value = result.join(" ");
-            } 
-            else if (type === 'words') {
-                for (let i = 0; i < count; i++) {
-                    result.push(getWord());
-                }
-                let res = result.join(" ");
-                document.getElementById('output').value = res.charAt(0).toUpperCase() + res.slice(1) + ".";
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function drawMeme() {
+            if (!currentImage) return;
+
+            // Set canvas size to image size
+            canvas.width = currentImage.width;
+            canvas.height = currentImage.height;
+
+            // Draw original image
+            ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+
+            // Setup text style
+            const fontSize = Math.floor(canvas.height / 10);
+            ctx.font = `900 ${fontSize}px Impact, Arial Black, sans-serif`;
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = Math.floor(fontSize / 15);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+
+            const topText = document.getElementById('topText').value.toUpperCase();
+            const bottomText = document.getElementById('bottomText').value.toUpperCase();
+
+            // Draw Top Text
+            if (topText) {
+                wrapText(ctx, topText, canvas.width / 2, 10, canvas.width - 20, fontSize);
+            }
+
+            // Draw Bottom Text
+            if (bottomText) {
+                ctx.textBaseline = 'bottom';
+                // Calculate reverse wrap
+                wrapText(ctx, bottomText, canvas.width / 2, canvas.height - 10, canvas.width - 20, fontSize, true);
             }
         }
 
-        function copyLorem() {
-            const text = document.getElementById('output').value;
-            if(text) {
-                copy(text);
+        function wrapText(context, text, x, y, maxWidth, lineHeight, isBottom = false) {
+            const words = text.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                const word = words[i];
+                const width = context.measureText(currentLine + " " + word).width;
+                if (width < maxWidth) {
+                    currentLine += " " + word;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = word;
+                }
+            }
+            lines.push(currentLine);
+
+            if (isBottom) {
+                let startY = y - (lines.length - 1) * lineHeight;
+                for (let i = 0; i < lines.length; i++) {
+                    context.strokeText(lines[i], x, startY + (i * lineHeight));
+                    context.fillText(lines[i], x, startY + (i * lineHeight));
+                }
             } else {
-                showToast("Generate text first!");
+                for (let i = 0; i < lines.length; i++) {
+                    context.strokeText(lines[i], x, y + (i * lineHeight));
+                    context.fillText(lines[i], x, y + (i * lineHeight));
+                }
             }
         }
 
-        // Generate default on load
-        generateLorem();
+        function downloadMeme() {
+            if (!currentImage) {
+                showToast("Please upload an image first.");
+                return;
+            }
+            const dataUrl = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = 'meme-easyytools.png';
+            link.href = dataUrl;
+            link.click();
+        }
     </script>
 </body>
 </html>

@@ -35,6 +35,25 @@
         <div class="prestige-panel animate-up">
             <h1 class="hero-title">URL Tools.</h1>
             
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; align-items: stretch;" id="url-grid">
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <label style="font-weight: 700; font-size: 1.1rem; color: var(--text);">Input String</label>
+                    <textarea id="url-input" class="search-input" style="height: 300px; text-align: left; font-size: 1.1rem; border-radius: 16px; padding: 1.5rem; resize: vertical;" placeholder="Type or paste URL/text here..."></textarea>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <label style="font-weight: 700; font-size: 1.1rem; color: var(--text);">Output String</label>
+                    <textarea id="url-output" class="search-input" style="height: 300px; text-align: left; font-size: 1.1rem; border-radius: 16px; padding: 1.5rem; background: var(--hover); color: var(--text); resize: vertical;" readonly placeholder="Result will appear here..."></textarea>
+                </div>
+            </div>
+            
+            <div id="url-error" style="color: #ff4757; margin-top: 1.5rem; font-weight: 700; display: none; padding: 1rem; background: rgba(255, 71, 87, 0.1); border-radius: 8px;">Invalid URL encoding!</div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem;">
+                <button class="btn-prestige" onclick="encodeUrl()">Encode URL</button>
+                <button class="btn-prestige" onclick="decodeUrl()">Decode URL</button>
+                <button class="btn-secondary" onclick="copyOutput()">Copy Output</button>
+                <button class="btn-secondary" onclick="clearFields()">Clear</button>
+            </div>
         </div>
     
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
@@ -59,6 +78,7 @@
                     <a href="currency-converter.html" class="footer-link">Currency Converter</a>
                     <a href="roi-calculator.html" class="footer-link">ROI Calculator</a>
                     <a href="amortization-calculator.html" class="footer-link">Amortization Calc</a>
+                    <a href="discount-calculator.html" class="footer-link">Discount Calculator</a>
                 </div>
             </div>
             <div>
@@ -69,6 +89,8 @@
                     <a href="stopwatch.html" class="footer-link">Stopwatch</a>
                     <a href="alarm.html" class="footer-link">Alarm Clock</a>
                     <a href="pomodoro.html" class="footer-link">Pomodoro Timer</a>
+                    <a href="timezone-converter.html" class="footer-link">Timezone Converter</a>
+                    <a href="bmr-calculator.html" class="footer-link">BMR Calculator</a>
                 </div>
             </div>
             <div>
@@ -84,6 +106,13 @@
                     <a href="remove-whitespace.html" class="footer-link">Remove Whitespace</a>
                     <a href="markdown-preview.html" class="footer-link">Markdown Preview</a>
                     <a href="qr-generator.html" class="footer-link">QR Generator</a>
+                    <a href="youtube-title-generator.html" class="footer-link">YouTube Title Gen</a>
+                    <a href="hashtag-generator.html" class="footer-link">Hashtag Generator</a>
+                    <a href="lorem-ipsum.html" class="footer-link">Lorem Ipsum Gen</a>
+                    <a href="meme-generator.html" class="footer-link">Meme Generator</a>
+                    <a href="text-to-pdf.html" class="footer-link">Text to PDF</a>
+                    <a href="text-to-speech.html" class="footer-link">Text to Speech</a>
+                    <a href="voice-typing.html" class="footer-link">Voice Typing Pad</a>
                 </div>
             </div>
             <div>
@@ -94,6 +123,8 @@
                     <a href="base64.html" class="footer-link">Base64 Encoder</a>
                     <a href="url-encoder.html" class="footer-link">URL Encoder</a>
                     <a href="uuid-generator.html" class="footer-link">UUID Generator</a>
+                    <a href="password-strength.html" class="footer-link">Password Strength</a>
+                    <a href="jwt-decoder.html" class="footer-link">JWT Decoder</a>
                 </div>
             </div>
             <div>
@@ -104,6 +135,10 @@
                     <a href="regex-tester.html" class="footer-link">Regex Matcher</a>
                     <a href="color-picker.html" class="footer-link">Color Picker</a>
                     <a href="random-number.html" class="footer-link">Random Number</a>
+                    <a href="utm-builder.html" class="footer-link">UTM Builder</a>
+                    <a href="html-beautifier.html" class="footer-link">HTML Beautifier</a>
+                    <a href="color-converter.html" class="footer-link">Color Converter</a>
+                    <a href="fake-data-generator.html" class="footer-link">Fake Data Gen</a>
                 </div>
             </div>
         </div>
@@ -117,7 +152,54 @@
     </footer>
     <script src="app.js"></script>
     <script>
+        function encodeUrl() {
+            const input = document.getElementById('url-input').value;
+            const errorDiv = document.getElementById('url-error');
+            errorDiv.style.display = 'none';
+            if (!input) {
+                document.getElementById('url-output').value = '';
+                return;
+            }
+            try {
+                const encoded = encodeURIComponent(input);
+                document.getElementById('url-output').value = encoded;
+            } catch (e) {
+                errorDiv.innerText = "Error encoding URL.";
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        function decodeUrl() {
+            const input = document.getElementById('url-input').value;
+            const errorDiv = document.getElementById('url-error');
+            errorDiv.style.display = 'none';
+            if (!input) {
+                document.getElementById('url-output').value = '';
+                return;
+            }
+            try {
+                const decoded = decodeURIComponent(input);
+                document.getElementById('url-output').value = decoded;
+            } catch (e) {
+                errorDiv.innerText = "Invalid URL encoding!";
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        function copyOutput() {
+            const out = document.getElementById('url-output').value;
+            if (out) {
+                copy(out);
+            } else {
+                showToast("Nothing to copy!");
+            }
+        }
         
+        function clearFields() {
+            document.getElementById('url-input').value = '';
+            document.getElementById('url-output').value = '';
+            document.getElementById('url-error').style.display = 'none';
+        }
     </script>
 </body>
 </html>

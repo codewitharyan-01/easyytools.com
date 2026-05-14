@@ -3,12 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regex Matcher | easyytools.com</title>
+    <title>HTML Beautifier | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
+    <style>
+        .split-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        @media (max-width: 768px) {
+            .split-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        textarea.code-area {
+            width: 100%;
+            height: 500px;
+            font-size: 1rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-family: monospace;
+            line-height: 1.5;
+            background: rgba(0,0,0,0.2);
+            color: var(--text);
+            border: 2px solid transparent;
+            resize: vertical;
+        }
+        textarea.code-area:focus {
+            border-color: var(--accent);
+            outline: none;
+            background: rgba(0,0,0,0.4);
+        }
+        .header-label {
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        /* ── Global responsive tweaks ────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .prestige-panel { padding: 1.75rem 1.25rem !important; border-radius: 20px !important; }
+            .hero-title { margin-bottom: 1.5rem !important; }
+            .ad-zone { margin: 2rem 0 !important; }
+        }
+        @media (max-width: 480px) {
+            .prestige-panel { padding: 1.25rem 1rem !important; }
+        }
+
+        @media (max-width: 640px) {
+            .header-label { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            textarea.code-area { height: 280px; }
+        }
+    </style>
 </head>
 <body>
     <div id="toast">Copied to clipboard</div>
-        <header class="site-header">
+    <header class="site-header">
         <a href="index.html" class="logo">easyytools.com</a>
         <nav class="desktop-nav">
             <a href="index.html">Home</a>
@@ -27,33 +80,33 @@
         <a href="contact.html" onclick="toggleMenu()">Contact</a>
     </div>
 
-
-    <main class="tool-view-prestige" style="max-width: 1000px;">
+    <main class="tool-view-prestige" style="max-width: 1200px;">
         <a href="index.html" class="btn-back">← Back</a>
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
-        
+
         <div class="prestige-panel animate-up">
-            <h1 class="hero-title">Regex Lab.</h1>
-            <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem;">
-                <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
-                    <div style="display: flex; align-items: center; background: var(--hover); padding: 0.5rem 1rem; border-radius: 12px; flex-grow: 1;">
-                        <span style="font-weight: 700; color: var(--text-muted); margin-right: 0.5rem;">/</span>
-                        <input type="text" id="regex-pattern" class="search-input" style="flex-grow: 1; border: none; background: transparent; font-family: monospace; font-size: 1.1rem; outline: none; padding: 0.5rem;" placeholder="Pattern (e.g. \d+)" oninput="testRegex()">
-                        <span style="font-weight: 700; color: var(--text-muted); margin-left: 0.5rem; margin-right: 0.5rem;">/</span>
-                        <input type="text" id="regex-flags" class="search-input" style="width: 60px; border: none; background: transparent; font-family: monospace; font-size: 1.1rem; outline: none; padding: 0.5rem;" placeholder="gmi" value="g" oninput="testRegex()">
-                    </div>
-                </div>
+            <h1 class="hero-title">HTML Beautifier.</h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">Format and indent messy, minified HTML code into clean, readable code.</p>
+
+            <div class="split-grid">
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-                    <div style="display: flex; flex-direction: column; gap: 1rem;">
-                        <label style="font-weight: 700; color: var(--text);">Test String</label>
-                        <textarea id="regex-input" class="search-input" style="height: 300px; font-family: monospace; padding: 1.5rem; border-radius: 12px;" placeholder="Type text to test against..." oninput="testRegex()"></textarea>
+                <div style="background: var(--hover); padding: 1.5rem; border-radius: 20px;">
+                    <div class="header-label">
+                        <span>Input (Raw HTML)</span>
+                        <button class="btn-secondary" onclick="document.getElementById('inputHtml').value=''" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Clear</button>
                     </div>
-                    <div style="display: flex; flex-direction: column; gap: 1rem;">
-                        <label style="font-weight: 700; color: var(--text);">Match Results</label>
-                        <div id="regex-output" style="height: 300px; overflow-y: auto; background: var(--hover); border-radius: 12px; padding: 1.5rem; font-family: monospace; color: var(--text); line-height: 1.6; white-space: pre-wrap;"></div>
-                    </div>
+                    <textarea id="inputHtml" class="code-area" placeholder="Paste your messy HTML here..."></textarea>
+                    <button class="btn-prestige" onclick="beautify()" style="width: 100%; margin-top: 1.5rem; padding: 1.2rem; font-size: 1.1rem;">Format HTML 🪄</button>
                 </div>
+
+                <div style="background: var(--hover); padding: 1.5rem; border-radius: 20px;">
+                    <div class="header-label">
+                        <span>Output (Formatted)</span>
+                        <button class="btn-prestige" onclick="copyOutput()" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Copy Code</button>
+                    </div>
+                    <textarea id="outputHtml" class="code-area" readonly placeholder="Formatted HTML will appear here..."></textarea>
+                </div>
+
             </div>
         </div>
     
@@ -153,45 +206,57 @@
     </footer>
     <script src="app.js"></script>
     <script>
-        function testRegex() {
-            const patternStr = document.getElementById('regex-pattern').value;
-            const flags = document.getElementById('regex-flags').value;
-            const input = document.getElementById('regex-input').value;
-            const outputDiv = document.getElementById('regex-output');
+        function formatHTML(html) {
+            let indent = '';
+            let out = [];
+            const shift = '    '; // 4 spaces
+            // Remove unnecessary spaces and newlines
+            let clean = html.replace(/\\n/g, '').replace(/\s+/g, ' ').replace(/>\s+</g, '><').trim();
+            
+            // Simple formatter logic
+            const tags = clean.split(/(<[^>]+>)/g).filter(i => i.trim() !== '');
 
-            if (!patternStr) {
-                outputDiv.innerHTML = '<span style="color: var(--text-muted);">Awaiting pattern...</span>';
+            for (let i = 0; i < tags.length; i++) {
+                const tag = tags[i];
+                if (tag.match(/^<\/[^>]+>$/)) {
+                    // Closing tag
+                    indent = indent.substring(shift.length);
+                    out.push(indent + tag);
+                } else if (tag.match(/^<[^>]+>$/) && !tag.match(/^<(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)[^>]*>$/) && !tag.match(/^<!/)) {
+                    // Opening tag (not self-closing)
+                    out.push(indent + tag);
+                    indent += shift;
+                } else {
+                    // Text node or self-closing
+                    out.push(indent + tag);
+                }
+            }
+            return out.join('\n');
+        }
+
+        function beautify() {
+            const input = document.getElementById('inputHtml').value;
+            const output = document.getElementById('outputHtml');
+            if(!input.trim()) {
+                showToast("Please enter HTML to format.");
                 return;
             }
-
             try {
-                const regex = new RegExp(patternStr, flags);
-                let match;
-                let results = [];
-                
-                if (flags.includes('g')) {
-                    while ((match = regex.exec(input)) !== null) {
-                        results.push(`Match: "${match[0]}" at index ${match.index}`);
-                        if (match.index === regex.lastIndex) regex.lastIndex++; // prevent infinite loops
-                    }
-                } else {
-                    match = regex.exec(input);
-                    if (match) {
-                        results.push(`Match: "${match[0]}" at index ${match.index}`);
-                    }
-                }
-
-                if (results.length > 0) {
-                    outputDiv.innerHTML = results.join('<br>');
-                } else {
-                    outputDiv.innerHTML = '<span style="color: #ff4757;">No matches found.</span>';
-                }
-            } catch (e) {
-                outputDiv.innerHTML = `<span style="color: #ff4757;">Invalid Regex: ${e.message}</span>`;
+                output.value = formatHTML(input);
+            } catch(e) {
+                showToast("Error formatting HTML");
+                output.value = input; // fallback
             }
         }
-        
-        testRegex();
+
+        function copyOutput() {
+            const text = document.getElementById('outputHtml').value;
+            if(text) {
+                copy(text);
+            } else {
+                showToast("Nothing to copy!");
+            }
+        }
     </script>
 </body>
 </html>

@@ -3,9 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lorem Ipsum Generator | easyytools.com</title>
+    <title>YouTube Title Generator | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
     <style>
+        .title-card {
+            background: rgba(255,255,255,0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s ease;
+        }
+        .title-card:hover {
+            background: var(--hover);
+            transform: translateY(-2px);
+        }
+        .title-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.4;
+        }
+        .copy-btn {
+            background: var(--accent);
+            color: #1e272e;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 800;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+    
         /* ── Global responsive tweaks ────────────────────────────────────── */
         @media (max-width: 768px) {
             .prestige-panel { padding: 1.75rem 1.25rem !important; border-radius: 20px !important; }
@@ -17,7 +48,9 @@
         }
 
         @media (max-width: 640px) {
-            .search-input { font-size: 1rem !important; }
+            .title-card { flex-direction: column; align-items: flex-start; }
+            .copy-btn   { width: 100%; text-align: center; }
+            .title-text { font-size: 1rem; }
         }
     </style>
 </head>
@@ -47,24 +80,34 @@
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
 
         <div class="prestige-panel animate-up">
-            <h1 class="hero-title">Lorem Ipsum.</h1>
-            <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">Generate high-quality placeholder text for your mockups and designs instantly.</p>
+            <h1 class="hero-title">YouTube Title Generator.</h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">Generate highly clickable, SEO-friendly video titles instantly.</p>
 
-            <div style="display: flex; flex-wrap: wrap; gap: 1rem; background: var(--hover); padding: 1.5rem; border-radius: 16px; align-items: center; margin-bottom: 2rem;">
-                <label style="font-weight: 800; color: var(--text);">Generate:</label>
-                <input type="number" id="count" value="5" min="1" max="100" class="search-input" style="width: 100px; font-size: 1.1rem; padding: 0.5rem 1rem; border-radius: 8px;">
-                <select id="type" class="search-input" style="min-width: 150px; font-size: 1.1rem; padding: 0.5rem 1rem; border-radius: 8px;">
-                    <option value="paragraphs">Paragraphs</option>
-                    <option value="sentences">Sentences</option>
-                    <option value="words">Words</option>
-                </select>
-                <div style="display: flex; gap: 0.5rem; margin-left: auto;">
-                    <button class="btn-prestige" onclick="generateLorem()">Generate</button>
-                    <button class="btn-secondary" onclick="copyLorem()">Copy Text</button>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem; background: var(--hover); padding: 2rem; border-radius: 20px;">
+                
+                <div>
+                    <label style="font-weight: 800; color: var(--text); display: block; margin-bottom: 0.5rem;">Main Topic / Keyword</label>
+                    <input type="text" id="keyword" class="search-input" style="width: 100%; font-size: 1.2rem; padding: 1rem; border-radius: 12px;" placeholder="e.g. AI Coding, Keto Diet, iPhone 15...">
                 </div>
+
+                <div>
+                    <label style="font-weight: 800; color: var(--text); display: block; margin-bottom: 0.5rem;">Vibe / Category</label>
+                    <select id="vibe" class="search-input" style="width: 100%; font-size: 1.1rem; padding: 1rem; border-radius: 12px;">
+                        <option value="all">Mix & Match (All Categories)</option>
+                        <option value="clickbait">High CTR / Clickbait</option>
+                        <option value="educational">Educational / How-To</option>
+                        <option value="review">Reviews / Tech</option>
+                        <option value="vlog">Vlogs / Lifestyle</option>
+                        <option value="listicle">Top 10s / Listicles</option>
+                    </select>
+                </div>
+
+                <button class="btn-prestige" onclick="generateTitles()" style="padding: 1.2rem; font-size: 1.2rem; width: 100%;">Generate Viral Titles 🚀</button>
             </div>
 
-            <textarea id="output" class="search-input" style="width: 100%; height: 400px; font-size: 1.1rem; padding: 2rem; border-radius: 20px; text-align: left; line-height: 1.6;" readonly></textarea>
+            <div id="results-container" style="display: none; margin-top: 3rem; flex-direction: column; gap: 1rem;">
+                <!-- Generated titles go here -->
+            </div>
         </div>
     
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
@@ -163,74 +206,100 @@
     </footer>
     <script src="app.js"></script>
     <script>
-        const words = [
-            "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
-            "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua",
-            "enim", "ad", "minim", "veniam", "quis", "nostrud", "exercitation", "ullamco", "laboris", "nisi", "ut", "aliquip", "ex", "ea", "commodo", "consequat",
-            "duis", "aute", "irure", "dolor", "in", "reprehenderit", "in", "voluptate", "velit", "esse", "cillum", "dolore", "eu", "fugiat", "nulla", "pariatur",
-            "excepteur", "sint", "occaecat", "cupidatat", "non", "proident", "sunt", "in", "culpa", "qui", "officia", "deserunt", "mollit", "anim", "id", "est", "laborum"
-        ];
+        const templates = {
+            clickbait: [
+                "I Tried [K] For 24 Hours... (Shocking Results!)",
+                "The TRUTH About [K] (What They Don't Tell You)",
+                "Why [K] is RUINING Your Life",
+                "[K]: The BIGGEST Mistake You're Making",
+                "I Tested [K] So You Don't Have To",
+                "The Dark Side of [K]",
+                "Nobody is Talking About This [K] Trick",
+                "[K] is Dead. Here's Why."
+            ],
+            educational: [
+                "How To Master [K] in 10 Minutes",
+                "[K] Explained for Beginners (2026)",
+                "The Ultimate Guide to [K]",
+                "5 Proven Ways to Improve [K]",
+                "[K] Tutorial: Step by Step",
+                "What is [K]? Everything You Need to Know",
+                "Advanced [K] Strategies You Need to Try",
+                "[K] 101: A Complete Masterclass"
+            ],
+            review: [
+                "Is [K] Worth It? (Honest Review)",
+                "[K] Unboxing & First Impressions!",
+                "Don't Buy [K] Until You Watch This!",
+                "[K] vs The Competition - Who Wins?",
+                "[K] - 6 Months Later...",
+                "The Best [K] Alternatives in 2026",
+                "Why I Stopped Using [K]",
+                "I Bought the Cheapest [K] on Amazon..."
+            ],
+            vlog: [
+                "A Day in the Life with [K]",
+                "My Experience with [K] (Storytime)",
+                "Behind the Scenes: [K]",
+                "Getting Ready for [K]",
+                "I Let My Subscribers Choose My [K]",
+                "My [K] Routine (Morning & Night)",
+                "Travel Diary: The [K] Edition"
+            ],
+            listicle: [
+                "Top 10 [K] Hacks You Didn't Know",
+                "7 Secrets About [K]",
+                "5 [K] Tips That Will Change Your Life",
+                "The 10 Best [K] of All Time",
+                "3 Weird [K] Tricks That Actually Work",
+                "9 [K] Mistakes to Avoid in 2026"
+            ]
+        };
 
-        function getWord() {
-            return words[Math.floor(Math.random() * words.length)];
-        }
-
-        function getSentence() {
-            const length = Math.floor(Math.random() * 10) + 5; // 5-15 words
-            let sentence = [];
-            for (let i = 0; i < length; i++) {
-                sentence.push(getWord());
+        function generateTitles() {
+            let kw = document.getElementById('keyword').value.trim();
+            const vibe = document.getElementById('vibe').value;
+            const res = document.getElementById('results-container');
+            
+            if(!kw) {
+                showToast("Please enter a topic keyword first!");
+                return;
             }
-            let res = sentence.join(" ") + ".";
-            return res.charAt(0).toUpperCase() + res.slice(1);
-        }
 
-        function getParagraph() {
-            const length = Math.floor(Math.random() * 5) + 3; // 3-8 sentences
-            let para = [];
-            for (let i = 0; i < length; i++) {
-                para.push(getSentence());
-            }
-            return para.join(" ");
-        }
+            // Title case the keyword
+            kw = kw.charAt(0).toUpperCase() + kw.slice(1);
 
-        function generateLorem() {
-            const count = parseInt(document.getElementById('count').value) || 5;
-            const type = document.getElementById('type').value;
-            let result = [];
-
-            if (type === 'paragraphs') {
-                for (let i = 0; i < count; i++) {
-                    result.push(getParagraph());
+            let selectedTemplates = [];
+            if(vibe === 'all') {
+                for(let key in templates) {
+                    selectedTemplates = selectedTemplates.concat(templates[key]);
                 }
-                document.getElementById('output').value = result.join("\\n\\n");
-            } 
-            else if (type === 'sentences') {
-                for (let i = 0; i < count; i++) {
-                    result.push(getSentence());
-                }
-                document.getElementById('output').value = result.join(" ");
-            } 
-            else if (type === 'words') {
-                for (let i = 0; i < count; i++) {
-                    result.push(getWord());
-                }
-                let res = result.join(" ");
-                document.getElementById('output').value = res.charAt(0).toUpperCase() + res.slice(1) + ".";
-            }
-        }
-
-        function copyLorem() {
-            const text = document.getElementById('output').value;
-            if(text) {
-                copy(text);
             } else {
-                showToast("Generate text first!");
+                selectedTemplates = [...templates[vibe]];
             }
-        }
 
-        // Generate default on load
-        generateLorem();
+            // Shuffle array
+            for (let i = selectedTemplates.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [selectedTemplates[i], selectedTemplates[j]] = [selectedTemplates[j], selectedTemplates[i]];
+            }
+
+            // Take top 10
+            const finalTitles = selectedTemplates.slice(0, 10).map(t => t.replace(/\[K\]/g, kw));
+
+            res.style.display = 'flex';
+            res.innerHTML = '';
+
+            finalTitles.forEach(title => {
+                const safeTitle = title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                res.innerHTML += `
+                    <div class="title-card">
+                        <div class="title-text">${title}</div>
+                        <button class="copy-btn" onclick="copy('${safeTitle}')">Copy</button>
+                    </div>
+                `;
+            });
+        }
     </script>
 </body>
 </html>

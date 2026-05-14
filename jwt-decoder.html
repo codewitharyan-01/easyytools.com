@@ -3,12 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regex Matcher | easyytools.com</title>
+    <title>JWT Decoder | easyytools.com</title>
     <link rel="stylesheet" href="index.css">
+    <style>
+        .json-box {
+            background: rgba(0,0,0,0.3);
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: var(--text);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            min-height: 100px;
+        }
+        .error-text {
+            color: var(--text-muted);
+            font-weight: 800;
+        }
+        .section-label {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .badge-header {
+            color: var(--text-muted);
+        }
+        .badge-payload {
+            color: var(--text-muted);
+        }
+    
+        /* ── Global responsive tweaks ────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .prestige-panel { padding: 1.75rem 1.25rem !important; border-radius: 20px !important; }
+            .hero-title { margin-bottom: 1.5rem !important; }
+            .ad-zone { margin: 2rem 0 !important; }
+        }
+        @media (max-width: 480px) {
+            .prestige-panel { padding: 1.25rem 1rem !important; }
+        }
+
+        @media (max-width: 640px) {
+            .json-box { font-size: 0.9rem; }
+            .section-label { font-size: 0.95rem; }
+        }
+    </style>
 </head>
 <body>
     <div id="toast">Copied to clipboard</div>
-        <header class="site-header">
+    <header class="site-header">
         <a href="index.html" class="logo">easyytools.com</a>
         <nav class="desktop-nav">
             <a href="index.html">Home</a>
@@ -27,33 +73,35 @@
         <a href="contact.html" onclick="toggleMenu()">Contact</a>
     </div>
 
-
-    <main class="tool-view-prestige" style="max-width: 1000px;">
+    <main class="tool-view-prestige" style="max-width: 1200px;">
         <a href="index.html" class="btn-back">← Back</a>
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
-        
+
         <div class="prestige-panel animate-up">
-            <h1 class="hero-title">Regex Lab.</h1>
-            <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem;">
-                <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
-                    <div style="display: flex; align-items: center; background: var(--hover); padding: 0.5rem 1rem; border-radius: 12px; flex-grow: 1;">
-                        <span style="font-weight: 700; color: var(--text-muted); margin-right: 0.5rem;">/</span>
-                        <input type="text" id="regex-pattern" class="search-input" style="flex-grow: 1; border: none; background: transparent; font-family: monospace; font-size: 1.1rem; outline: none; padding: 0.5rem;" placeholder="Pattern (e.g. \d+)" oninput="testRegex()">
-                        <span style="font-weight: 700; color: var(--text-muted); margin-left: 0.5rem; margin-right: 0.5rem;">/</span>
-                        <input type="text" id="regex-flags" class="search-input" style="width: 60px; border: none; background: transparent; font-family: monospace; font-size: 1.1rem; outline: none; padding: 0.5rem;" placeholder="gmi" value="g" oninput="testRegex()">
-                    </div>
-                </div>
+            <h1 class="hero-title">JWT Decoder.</h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">Decode JSON Web Tokens instantly to inspect header, payload, and claims.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-                    <div style="display: flex; flex-direction: column; gap: 1rem;">
-                        <label style="font-weight: 700; color: var(--text);">Test String</label>
-                        <textarea id="regex-input" class="search-input" style="height: 300px; font-family: monospace; padding: 1.5rem; border-radius: 12px;" placeholder="Type text to test against..." oninput="testRegex()"></textarea>
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 1rem;">
-                        <label style="font-weight: 700; color: var(--text);">Match Results</label>
-                        <div id="regex-output" style="height: 300px; overflow-y: auto; background: var(--hover); border-radius: 12px; padding: 1.5rem; font-family: monospace; color: var(--text); line-height: 1.6; white-space: pre-wrap;"></div>
-                    </div>
+                <div style="background: var(--hover); padding: 2rem; border-radius: 20px; display: flex; flex-direction: column;">
+                    <label class="section-label" style="color: var(--text-muted);">Encoded JWT String</label>
+                    <textarea id="jwtInput" class="search-input" style="flex-grow: 1; min-height: 400px; font-size: 1.1rem; padding: 1.5rem; border-radius: 12px; font-family: monospace; line-height: 1.6;" placeholder="Paste your JWT here... (e.g. eyJhbG...)" oninput="decodeJWT()"></textarea>
                 </div>
+
+                <div style="background: var(--hover); padding: 2rem; border-radius: 20px; display: flex; flex-direction: column; gap: 1.5rem;">
+                    
+                    <div>
+                        <div class="section-label badge-header">Header (Algorithm & Type)</div>
+                        <div class="json-box" id="headerOutput">Waiting for input...</div>
+                    </div>
+
+                    <div>
+                        <div class="section-label badge-payload">Payload (Data & Claims)</div>
+                        <div class="json-box" id="payloadOutput" style="flex-grow: 1;">Waiting for input...</div>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     
@@ -153,45 +201,61 @@
     </footer>
     <script src="app.js"></script>
     <script>
-        function testRegex() {
-            const patternStr = document.getElementById('regex-pattern').value;
-            const flags = document.getElementById('regex-flags').value;
-            const input = document.getElementById('regex-input').value;
-            const outputDiv = document.getElementById('regex-output');
+        function b64DecodeUnicode(str) {
+            // Decoding base64url to base64
+            str = str.replace(/-/g, '+').replace(/_/g, '/');
+            // Pad out with standard base64 required padding characters
+            var pad = str.length % 4;
+            if(pad) {
+                if(pad === 1) {
+                    throw new Error('InvalidLengthError: Input base64url string is the wrong length to determine padding');
+                }
+                str += new Array(5-pad).join('=');
+            }
+            
+            // Decode to string, then parse UTF-8 characters properly
+            return decodeURIComponent(atob(str).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+        }
 
-            if (!patternStr) {
-                outputDiv.innerHTML = '<span style="color: var(--text-muted);">Awaiting pattern...</span>';
+        function decodeJWT() {
+            const token = document.getElementById('jwtInput').value.trim();
+            const headerOut = document.getElementById('headerOutput');
+            const payloadOut = document.getElementById('payloadOutput');
+
+            if (!token) {
+                headerOut.innerHTML = 'Waiting for input...';
+                headerOut.className = 'json-box';
+                payloadOut.innerHTML = 'Waiting for input...';
+                payloadOut.className = 'json-box';
+                return;
+            }
+
+            const parts = token.split('.');
+            if (parts.length !== 3) {
+                headerOut.innerHTML = '<span class="error-text">Invalid JWT format. Must contain exactly 3 dot-separated parts.</span>';
+                payloadOut.innerHTML = '';
                 return;
             }
 
             try {
-                const regex = new RegExp(patternStr, flags);
-                let match;
-                let results = [];
-                
-                if (flags.includes('g')) {
-                    while ((match = regex.exec(input)) !== null) {
-                        results.push(`Match: "${match[0]}" at index ${match.index}`);
-                        if (match.index === regex.lastIndex) regex.lastIndex++; // prevent infinite loops
-                    }
-                } else {
-                    match = regex.exec(input);
-                    if (match) {
-                        results.push(`Match: "${match[0]}" at index ${match.index}`);
-                    }
-                }
+                const headerRaw = b64DecodeUnicode(parts[0]);
+                const payloadRaw = b64DecodeUnicode(parts[1]);
 
-                if (results.length > 0) {
-                    outputDiv.innerHTML = results.join('<br>');
-                } else {
-                    outputDiv.innerHTML = '<span style="color: #ff4757;">No matches found.</span>';
-                }
+                const headerJson = JSON.parse(headerRaw);
+                const payloadJson = JSON.parse(payloadRaw);
+
+                headerOut.innerHTML = JSON.stringify(headerJson, null, 4);
+                payloadOut.innerHTML = JSON.stringify(payloadJson, null, 4);
             } catch (e) {
-                outputDiv.innerHTML = `<span style="color: #ff4757;">Invalid Regex: ${e.message}</span>`;
+                headerOut.innerHTML = '<span class="error-text">Failed to decode token. Ensure it is a valid Base64 encoded JWT.</span>';
+                payloadOut.innerHTML = '';
             }
         }
         
-        testRegex();
+        // responsive handled via CSS
+        }
     </script>
 </body>
 </html>

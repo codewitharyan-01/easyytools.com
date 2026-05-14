@@ -34,7 +34,20 @@
         
         <div class="prestige-panel animate-up">
             <h1 class="hero-title">CSS Mini.</h1>
-            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <label style="font-weight: 700; color: var(--text);">Input CSS</label>
+                    <textarea id="css-input" class="search-input" style="height: 400px; font-family: monospace; padding: 1rem; border-radius: 12px;" placeholder="Paste CSS here..."></textarea>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <label style="font-weight: 700; color: var(--text);">Minified CSS</label>
+                    <textarea id="css-output" class="search-input" style="height: 400px; font-family: monospace; padding: 1rem; border-radius: 12px; background: var(--hover);" readonly placeholder="Minified result..."></textarea>
+                </div>
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button class="btn-prestige" onclick="minifyCSS()">Minify CSS</button>
+                <button class="btn-secondary" onclick="copyCSS()">Copy Output</button>
+            </div>
         </div>
     
         <div class="ad-zone" style="margin: 4rem 0;">AdSense Advertisement Zone</div>
@@ -59,6 +72,7 @@
                     <a href="currency-converter.html" class="footer-link">Currency Converter</a>
                     <a href="roi-calculator.html" class="footer-link">ROI Calculator</a>
                     <a href="amortization-calculator.html" class="footer-link">Amortization Calc</a>
+                    <a href="discount-calculator.html" class="footer-link">Discount Calculator</a>
                 </div>
             </div>
             <div>
@@ -69,6 +83,8 @@
                     <a href="stopwatch.html" class="footer-link">Stopwatch</a>
                     <a href="alarm.html" class="footer-link">Alarm Clock</a>
                     <a href="pomodoro.html" class="footer-link">Pomodoro Timer</a>
+                    <a href="timezone-converter.html" class="footer-link">Timezone Converter</a>
+                    <a href="bmr-calculator.html" class="footer-link">BMR Calculator</a>
                 </div>
             </div>
             <div>
@@ -84,6 +100,13 @@
                     <a href="remove-whitespace.html" class="footer-link">Remove Whitespace</a>
                     <a href="markdown-preview.html" class="footer-link">Markdown Preview</a>
                     <a href="qr-generator.html" class="footer-link">QR Generator</a>
+                    <a href="youtube-title-generator.html" class="footer-link">YouTube Title Gen</a>
+                    <a href="hashtag-generator.html" class="footer-link">Hashtag Generator</a>
+                    <a href="lorem-ipsum.html" class="footer-link">Lorem Ipsum Gen</a>
+                    <a href="meme-generator.html" class="footer-link">Meme Generator</a>
+                    <a href="text-to-pdf.html" class="footer-link">Text to PDF</a>
+                    <a href="text-to-speech.html" class="footer-link">Text to Speech</a>
+                    <a href="voice-typing.html" class="footer-link">Voice Typing Pad</a>
                 </div>
             </div>
             <div>
@@ -94,6 +117,8 @@
                     <a href="base64.html" class="footer-link">Base64 Encoder</a>
                     <a href="url-encoder.html" class="footer-link">URL Encoder</a>
                     <a href="uuid-generator.html" class="footer-link">UUID Generator</a>
+                    <a href="password-strength.html" class="footer-link">Password Strength</a>
+                    <a href="jwt-decoder.html" class="footer-link">JWT Decoder</a>
                 </div>
             </div>
             <div>
@@ -104,6 +129,10 @@
                     <a href="regex-tester.html" class="footer-link">Regex Matcher</a>
                     <a href="color-picker.html" class="footer-link">Color Picker</a>
                     <a href="random-number.html" class="footer-link">Random Number</a>
+                    <a href="utm-builder.html" class="footer-link">UTM Builder</a>
+                    <a href="html-beautifier.html" class="footer-link">HTML Beautifier</a>
+                    <a href="color-converter.html" class="footer-link">Color Converter</a>
+                    <a href="fake-data-generator.html" class="footer-link">Fake Data Gen</a>
                 </div>
             </div>
         </div>
@@ -117,7 +146,19 @@
     </footer>
     <script src="app.js"></script>
     <script>
-        
+        function minifyCSS() {
+            const input = document.getElementById('css-input').value;
+            const minified = input
+                .replace(/\/\*[\s\S]*?\*\//g, '')
+                .replace(/\s+/g, ' ')
+                .replace(/\s*([\{\}\:\;\,])\s*/g, '$1')
+                .replace(/\;+\}/g, '}');
+            document.getElementById('css-output').value = minified.trim();
+        }
+        function copyCSS() {
+            const out = document.getElementById('css-output').value;
+            if (out) copy(out);
+        }
     </script>
 </body>
 </html>
